@@ -1,0 +1,2262 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Faultline 2005-09-01</title>
+<style>
+:root {
+  color-scheme: light;
+  --surface: #fcfcfb; --card: #ffffff; --border: #e4e3df;
+  --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #7a7974;
+  --series-1: #2a78d6; --bar-empty: #e4e3df;
+  --critical: #d03b3b; --serious: #ec835a; --warning: #fab219; --env: #2a78d6; --neutral: #9a9994;
+  --code-bg: #f3f2ef;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --surface: #1a1a19; --card: #232322; --border: #383835;
+    --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #96958d;
+    --series-1: #3987e5; --bar-empty: #383835; --env: #3987e5; --neutral: #74736d; --code-bg: #2c2c2a;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --surface: #1a1a19; --card: #232322; --border: #383835;
+  --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #96958d;
+  --series-1: #3987e5; --bar-empty: #383835; --env: #3987e5; --neutral: #74736d; --code-bg: #2c2c2a;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--surface); color: var(--text-primary);
+       font: 14px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+main { max-width: 1100px; margin: 0 auto; padding: 24px 16px 48px; }
+h1 { font-size: 22px; margin: 0 0 4px; }
+.sub { color: var(--text-secondary); margin: 0 0 20px; }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 20px; }
+.tile { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; }
+.tile .v { font-size: 26px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.tile .k { color: var(--text-secondary); font-size: 12px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+.badge { display: inline-flex; align-items: center; gap: 6px; padding: 2px 8px; border-radius: 999px;
+         border: 1px solid var(--border); background: var(--card); font-size: 12px; white-space: nowrap; }
+.badge::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--dot); }
+.b-new_bug { --dot: var(--critical); } .b-known_bug { --dot: var(--serious); } .b-flaky { --dot: var(--warning); }
+.b-environment { --dot: var(--env); } .b-noise { --dot: var(--neutral); }
+.sig { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; margin-bottom: 12px; }
+.sig-head { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; }
+.sig-head .id { font-weight: 600; }
+.meta { color: var(--text-secondary); font-size: 13px; font-variant-numeric: tabular-nums; }
+.spark { margin-left: auto; display: flex; align-items: center; gap: 6px; color: var(--text-muted); font-size: 11px; }
+.spark svg rect { fill: var(--series-1); }
+.spark svg rect.zero { fill: var(--bar-empty); }
+.summary { margin: 10px 0 8px; }
+.src { color: var(--text-muted); font-size: 11px; }
+code, pre { font-family: ui-monospace, Consolas, monospace; font-size: 12px; }
+pre { background: var(--code-bg); padding: 8px 10px; border-radius: 6px; overflow-x: auto; margin: 6px 0 0; white-space: pre-wrap; word-break: break-word; }
+details summary { cursor: pointer; color: var(--text-secondary); font-size: 13px; }
+.check { color: var(--text-secondary); font-size: 13px; margin: -8px 0 20px; }
+footer { color: var(--text-muted); font-size: 12px; margin-top: 28px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Faultline · 2005-09-01</h1>
+  <p class="sub">1,335 failure lines grouped into 33 signatures
+    (40× fewer items to review). Summaries: ollama:gemma3:4b.</p>
+
+  <section class="tiles" aria-label="Run totals">
+    <div class="tile"><div class="v">1,335</div><div class="k">Failure lines</div></div>
+    <div class="tile"><div class="v">33</div><div class="k">Signatures</div></div>
+    <div class="tile"><div class="v">0</div><div class="k">New signatures</div></div>
+    <div class="tile"><div class="v">2</div><div class="k">Known / flaky</div></div>
+  </section>
+
+  <div class="chips" aria-label="Signatures per bucket">
+    
+    <span class="badge b-new_bug">New bug: 0</span>
+    
+    <span class="badge b-known_bug">Known bug: 2</span>
+    
+    <span class="badge b-flaky">Flaky: 0</span>
+    
+    <span class="badge b-environment">Environment: 3</span>
+    
+    <span class="badge b-noise">Benign noise: 28</span>
+    
+  </div>
+  
+  <p class="check">Label check (BGL ground truth for this run): accuracy 100.0%,
+    macro-F1 1.00, alert recall 100.0%.</p>
+  
+
+  
+  <article class="sig">
+    <div class="sig-head">
+      <span class="id">SIG-0030</span>
+      <span class="badge b-known_bug">Known bug</span>
+      <span class="meta">5 lines · 1 nodes · KERNEL/FATAL ·
+        KERNRTSP (100% alerts) · first seen 2005-06-05</span>
+      <span class="spark" title="Occurrences over the last 14 days">
+        <svg width="84" height="22" viewBox="0 0 84 22" role="img" aria-label="Daily counts, last 14 days: 0, 0, 1, 0, 0, 1, 0, 1, 0, 70, 0, 3, 2, 5">
+          
+          
+          
+          <rect class="zero" x="0" y="20" width="4" height="2" rx="1"><title>2005-08-19: 0</title></rect>
+          
+          
+          <rect class="zero" x="6" y="20" width="4" height="2" rx="1"><title>2005-08-20: 0</title></rect>
+          
+          
+          <rect class="" x="12" y="19" width="4" height="3" rx="1"><title>2005-08-21: 1</title></rect>
+          
+          
+          <rect class="zero" x="18" y="20" width="4" height="2" rx="1"><title>2005-08-22: 0</title></rect>
+          
+          
+          <rect class="zero" x="24" y="20" width="4" height="2" rx="1"><title>2005-08-23: 0</title></rect>
+          
+          
+          <rect class="" x="30" y="19" width="4" height="3" rx="1"><title>2005-08-24: 1</title></rect>
+          
+          
+          <rect class="zero" x="36" y="20" width="4" height="2" rx="1"><title>2005-08-25: 0</title></rect>
+          
+          
+          <rect class="" x="42" y="19" width="4" height="3" rx="1"><title>2005-08-26: 1</title></rect>
+          
+          
+          <rect class="zero" x="48" y="20" width="4" height="2" rx="1"><title>2005-08-27: 0</title></rect>
+          
+          
+          <rect class="" x="54" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-28: 70</title></rect>
+          
+          
+          <rect class="zero" x="60" y="20" width="4" height="2" rx="1"><title>2005-08-29: 0</title></rect>
+          
+          
+          <rect class="" x="66" y="19" width="4" height="3" rx="1"><title>2005-08-30: 3</title></rect>
+          
+          
+          <rect class="" x="72" y="19" width="4" height="3" rx="1"><title>2005-08-31: 2</title></rect>
+          
+          
+          <rect class="" x="78" y="19" width="4" height="3" rx="1"><title>2005-09-01: 5</title></rect>
+          
+        </svg>14d
+      </span>
+    </div>
+    <p class="summary">Likely cause: A kernel panic triggered by an RTS error is causing premature process termination. This is affecting the stability of the BlueGene/L system, leading to node failures. Next step: Examine the system logs for the specific RTS error message preceding the panic to identify the problematic resource or operation. <span class="src">[ollama:gemma3:4b]</span></p>
+    <details>
+      <summary>Templates and sample lines</summary>
+      <pre>rts panic! - stopping execution
+</pre>
+      <pre>rts panic! - stopping execution
+</pre>
+    </details>
+  </article>
+  
+  <article class="sig">
+    <div class="sig-head">
+      <span class="id">SIG-0006</span>
+      <span class="badge b-known_bug">Known bug</span>
+      <span class="meta">1 lines · 1 nodes · KERNEL/FATAL ·
+        KERNMC (100% alerts) · first seen 2005-06-05</span>
+      <span class="spark" title="Occurrences over the last 14 days">
+        <svg width="84" height="22" viewBox="0 0 84 22" role="img" aria-label="Daily counts, last 14 days: 1, 1, 1, 2, 0, 1, 1, 0, 3, 1, 2, 0, 1, 1">
+          
+          
+          
+          <rect class="" x="0" y="15.3" width="4" height="6.7" rx="1"><title>2005-08-19: 1</title></rect>
+          
+          
+          <rect class="" x="6" y="15.3" width="4" height="6.7" rx="1"><title>2005-08-20: 1</title></rect>
+          
+          
+          <rect class="" x="12" y="15.3" width="4" height="6.7" rx="1"><title>2005-08-21: 1</title></rect>
+          
+          
+          <rect class="" x="18" y="8.7" width="4" height="13.3" rx="1"><title>2005-08-22: 2</title></rect>
+          
+          
+          <rect class="zero" x="24" y="20" width="4" height="2" rx="1"><title>2005-08-23: 0</title></rect>
+          
+          
+          <rect class="" x="30" y="15.3" width="4" height="6.7" rx="1"><title>2005-08-24: 1</title></rect>
+          
+          
+          <rect class="" x="36" y="15.3" width="4" height="6.7" rx="1"><title>2005-08-25: 1</title></rect>
+          
+          
+          <rect class="zero" x="42" y="20" width="4" height="2" rx="1"><title>2005-08-26: 0</title></rect>
+          
+          
+          <rect class="" x="48" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-27: 3</title></rect>
+          
+          
+          <rect class="" x="54" y="15.3" width="4" height="6.7" rx="1"><title>2005-08-28: 1</title></rect>
+          
+          
+          <rect class="" x="60" y="8.7" width="4" height="13.3" rx="1"><title>2005-08-29: 2</title></rect>
+          
+          
+          <rect class="zero" x="66" y="20" width="4" height="2" rx="1"><title>2005-08-30: 0</title></rect>
+          
+          
+          <rect class="" x="72" y="15.3" width="4" height="6.7" rx="1"><title>2005-08-31: 1</title></rect>
+          
+          
+          <rect class="" x="78" y="15.3" width="4" height="6.7" rx="1"><title>2005-09-01: 1</title></rect>
+          
+        </svg>14d
+      </span>
+    </div>
+    <p class="summary">Likely Cause: A machine check interrupt is occurring due to a hardware error, specifically related to the kernel. This affects the overall system stability and performance of the BlueGene/L supercomputer. Next step: Examine the node&#39;s hardware logs for specific error codes or sensor readings preceding the interrupt. <span class="src">[ollama:gemma3:4b]</span></p>
+    <details>
+      <summary>Templates and sample lines</summary>
+      <pre>machine check interrupt
+</pre>
+      <pre>machine check interrupt
+</pre>
+    </details>
+  </article>
+  
+  <article class="sig">
+    <div class="sig-head">
+      <span class="id">SIG-0122</span>
+      <span class="badge b-environment">Environment</span>
+      <span class="meta">1,093 lines · 1024 nodes · KERNEL/FATAL ·
+        KERNMNTF (100% alerts) · first seen 2005-08-03</span>
+      <span class="spark" title="Occurrences over the last 14 days">
+        <svg width="84" height="22" viewBox="0 0 84 22" role="img" aria-label="Daily counts, last 14 days: 0, 0, 0, 0, 0, 0, 670, 0, 0, 0, 0, 0, 3081, 1093">
+          
+          
+          
+          <rect class="zero" x="0" y="20" width="4" height="2" rx="1"><title>2005-08-19: 0</title></rect>
+          
+          
+          <rect class="zero" x="6" y="20" width="4" height="2" rx="1"><title>2005-08-20: 0</title></rect>
+          
+          
+          <rect class="zero" x="12" y="20" width="4" height="2" rx="1"><title>2005-08-21: 0</title></rect>
+          
+          
+          <rect class="zero" x="18" y="20" width="4" height="2" rx="1"><title>2005-08-22: 0</title></rect>
+          
+          
+          <rect class="zero" x="24" y="20" width="4" height="2" rx="1"><title>2005-08-23: 0</title></rect>
+          
+          
+          <rect class="zero" x="30" y="20" width="4" height="2" rx="1"><title>2005-08-24: 0</title></rect>
+          
+          
+          <rect class="" x="36" y="17.7" width="4" height="4.3" rx="1"><title>2005-08-25: 670</title></rect>
+          
+          
+          <rect class="zero" x="42" y="20" width="4" height="2" rx="1"><title>2005-08-26: 0</title></rect>
+          
+          
+          <rect class="zero" x="48" y="20" width="4" height="2" rx="1"><title>2005-08-27: 0</title></rect>
+          
+          
+          <rect class="zero" x="54" y="20" width="4" height="2" rx="1"><title>2005-08-28: 0</title></rect>
+          
+          
+          <rect class="zero" x="60" y="20" width="4" height="2" rx="1"><title>2005-08-29: 0</title></rect>
+          
+          
+          <rect class="zero" x="66" y="20" width="4" height="2" rx="1"><title>2005-08-30: 0</title></rect>
+          
+          
+          <rect class="" x="72" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-31: 3,081</title></rect>
+          
+          
+          <rect class="" x="78" y="14.9" width="4" height="7.1" rx="1"><title>2005-09-01: 1,093</title></rect>
+          
+        </svg>14d
+      </span>
+    </div>
+    <p class="summary">The root cause is likely a persistent issue with Lustre mount failures, specifically targeting the `/p/gb1` directory. This is impacting numerous nodes (1024) and resulting in a high volume of FATAL kernel errors.  Next, investigate the Lustre server logs for `/p/gb1` for errors related to I/O contention or disk health. <span class="src">[ollama:gemma3:4b]</span></p>
+    <details>
+      <summary>Templates and sample lines</summary>
+      <pre>Lustre mount FAILED : &lt;*&gt; : point &lt;PATH&gt;
+</pre>
+      <pre>Lustre mount FAILED : bglio261 : point /p/gb1
+Lustre mount FAILED : bglio262 : point /p/gb1
+Lustre mount FAILED : bglio385 : point /p/gb1
+</pre>
+    </details>
+  </article>
+  
+  <article class="sig">
+    <div class="sig-head">
+      <span class="id">SIG-0094</span>
+      <span class="badge b-environment">Environment</span>
+      <span class="meta">100 lines · 1 nodes · LINKCARD/FATAL ·
+        LINKIAP (100% alerts) · first seen 2005-06-28</span>
+      <span class="spark" title="Occurrences over the last 14 days">
+        <svg width="84" height="22" viewBox="0 0 84 22" role="img" aria-label="Daily counts, last 14 days: 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 100">
+          
+          
+          
+          <rect class="zero" x="0" y="20" width="4" height="2" rx="1"><title>2005-08-19: 0</title></rect>
+          
+          
+          <rect class="zero" x="6" y="20" width="4" height="2" rx="1"><title>2005-08-20: 0</title></rect>
+          
+          
+          <rect class="zero" x="12" y="20" width="4" height="2" rx="1"><title>2005-08-21: 0</title></rect>
+          
+          
+          <rect class="zero" x="18" y="20" width="4" height="2" rx="1"><title>2005-08-22: 0</title></rect>
+          
+          
+          <rect class="zero" x="24" y="20" width="4" height="2" rx="1"><title>2005-08-23: 0</title></rect>
+          
+          
+          <rect class="zero" x="30" y="20" width="4" height="2" rx="1"><title>2005-08-24: 0</title></rect>
+          
+          
+          <rect class="zero" x="36" y="20" width="4" height="2" rx="1"><title>2005-08-25: 0</title></rect>
+          
+          
+          <rect class="zero" x="42" y="20" width="4" height="2" rx="1"><title>2005-08-26: 0</title></rect>
+          
+          
+          <rect class="zero" x="48" y="20" width="4" height="2" rx="1"><title>2005-08-27: 0</title></rect>
+          
+          
+          <rect class="zero" x="54" y="20" width="4" height="2" rx="1"><title>2005-08-28: 0</title></rect>
+          
+          
+          <rect class="zero" x="60" y="20" width="4" height="2" rx="1"><title>2005-08-29: 0</title></rect>
+          
+          
+          <rect class="" x="66" y="19" width="4" height="3" rx="1"><title>2005-08-30: 2</title></rect>
+          
+          
+          <rect class="zero" x="72" y="20" width="4" height="2" rx="1"><title>2005-08-31: 0</title></rect>
+          
+          
+          <rect class="" x="78" y="2.0" width="4" height="20.0" rx="1"><title>2005-09-01: 100</title></rect>
+          
+        </svg>14d
+      </span>
+    </div>
+    <p class="summary">The root cause is likely a corrupted or misaligned IAP (Interconnect Access Port) message being received by the MidplaneSwitchController, evidenced by the repeated `ffbffbff` status. This is affecting communication between the LINKCARD and the supercomputer&#39;s interconnect.  Next, capture a packet capture on node R63-M0-L2-U21-A to analyze the exact IAP message content and identify the source of the corruption. <span class="src">[ollama:gemma3:4b]</span></p>
+    <details>
+      <summary>Templates and sample lines</summary>
+      <pre>MidplaneSwitchController::receiveTrain() iap failed: &lt;LOC&gt; status &lt;HEX&gt; &lt;HEX&gt;
+</pre>
+      <pre>MidplaneSwitchController::receiveTrain() iap failed: R63-M0-L2-U21-A, status=ffbffbff ec000000
+</pre>
+    </details>
+  </article>
+  
+  <article class="sig">
+    <div class="sig-head">
+      <span class="id">SIG-0092</span>
+      <span class="badge b-environment">Environment</span>
+      <span class="meta">1 lines · 1 nodes · KERNEL/FATAL ·
+        KERNCON (100% alerts) · first seen 2005-06-28</span>
+      <span class="spark" title="Occurrences over the last 14 days">
+        <svg width="84" height="22" viewBox="0 0 84 22" role="img" aria-label="Daily counts, last 14 days: 0, 0, 0, 0, 1, 11, 0, 0, 5, 0, 0, 0, 8, 1">
+          
+          
+          
+          <rect class="zero" x="0" y="20" width="4" height="2" rx="1"><title>2005-08-19: 0</title></rect>
+          
+          
+          <rect class="zero" x="6" y="20" width="4" height="2" rx="1"><title>2005-08-20: 0</title></rect>
+          
+          
+          <rect class="zero" x="12" y="20" width="4" height="2" rx="1"><title>2005-08-21: 0</title></rect>
+          
+          
+          <rect class="zero" x="18" y="20" width="4" height="2" rx="1"><title>2005-08-22: 0</title></rect>
+          
+          
+          <rect class="" x="24" y="19" width="4" height="3" rx="1"><title>2005-08-23: 1</title></rect>
+          
+          
+          <rect class="" x="30" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-24: 11</title></rect>
+          
+          
+          <rect class="zero" x="36" y="20" width="4" height="2" rx="1"><title>2005-08-25: 0</title></rect>
+          
+          
+          <rect class="zero" x="42" y="20" width="4" height="2" rx="1"><title>2005-08-26: 0</title></rect>
+          
+          
+          <rect class="" x="48" y="12.9" width="4" height="9.1" rx="1"><title>2005-08-27: 5</title></rect>
+          
+          
+          <rect class="zero" x="54" y="20" width="4" height="2" rx="1"><title>2005-08-28: 0</title></rect>
+          
+          
+          <rect class="zero" x="60" y="20" width="4" height="2" rx="1"><title>2005-08-29: 0</title></rect>
+          
+          
+          <rect class="zero" x="66" y="20" width="4" height="2" rx="1"><title>2005-08-30: 0</title></rect>
+          
+          
+          <rect class="" x="72" y="7.5" width="4" height="14.5" rx="1"><title>2005-08-31: 8</title></rect>
+          
+          
+          <rect class="" x="78" y="19" width="4" height="3" rx="1"><title>2005-09-01: 1</title></rect>
+          
+        </svg>14d
+      </span>
+    </div>
+    <p class="summary">The root cause is a persistent network timeout (BGLERR_IDO_PKT_TIMEOUT) preventing the MailboxMonitor from communicating with a node. This is affecting the ability to receive critical data from the affected node, potentially leading to data processing errors.  Next, investigate the network connectivity between the MailboxMonitor and the failing node, checking for link errors or congestion. <span class="src">[ollama:gemma3:4b]</span></p>
+    <details>
+      <summary>Templates and sample lines</summary>
+      <pre>MailboxMonitor::serviceMailboxes() lib_ido_error: -&lt;NUM&gt; BGLERR_IDO_PKT_TIMEOUT connection lost to node/link/service card
+</pre>
+      <pre>MailboxMonitor::serviceMailboxes() lib_ido_error: -1033 BGLERR_IDO_PKT_TIMEOUT connection lost to node/link/service card
+</pre>
+    </details>
+  </article>
+  
+  <article class="sig">
+    <div class="sig-head">
+      <span class="id">SIG-0070</span>
+      <span class="badge b-noise">Benign noise</span>
+      <span class="meta">45 lines · 30 nodes · DISCOVERY/SEVERE ·
+        BENIGN (0% alerts) · first seen 2005-06-08</span>
+      <span class="spark" title="Occurrences over the last 14 days">
+        <svg width="84" height="22" viewBox="0 0 84 22" role="img" aria-label="Daily counts, last 14 days: 15, 0, 0, 0, 0, 45, 0, 0, 27, 0, 30, 15, 0, 45">
+          
+          
+          
+          <rect class="" x="0" y="15.3" width="4" height="6.7" rx="1"><title>2005-08-19: 15</title></rect>
+          
+          
+          <rect class="zero" x="6" y="20" width="4" height="2" rx="1"><title>2005-08-20: 0</title></rect>
+          
+          
+          <rect class="zero" x="12" y="20" width="4" height="2" rx="1"><title>2005-08-21: 0</title></rect>
+          
+          
+          <rect class="zero" x="18" y="20" width="4" height="2" rx="1"><title>2005-08-22: 0</title></rect>
+          
+          
+          <rect class="zero" x="24" y="20" width="4" height="2" rx="1"><title>2005-08-23: 0</title></rect>
+          
+          
+          <rect class="" x="30" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-24: 45</title></rect>
+          
+          
+          <rect class="zero" x="36" y="20" width="4" height="2" rx="1"><title>2005-08-25: 0</title></rect>
+          
+          
+          <rect class="zero" x="42" y="20" width="4" height="2" rx="1"><title>2005-08-26: 0</title></rect>
+          
+          
+          <rect class="" x="48" y="10.0" width="4" height="12.0" rx="1"><title>2005-08-27: 27</title></rect>
+          
+          
+          <rect class="zero" x="54" y="20" width="4" height="2" rx="1"><title>2005-08-28: 0</title></rect>
+          
+          
+          <rect class="" x="60" y="8.7" width="4" height="13.3" rx="1"><title>2005-08-29: 30</title></rect>
+          
+          
+          <rect class="" x="66" y="15.3" width="4" height="6.7" rx="1"><title>2005-08-30: 15</title></rect>
+          
+          
+          <rect class="zero" x="72" y="20" width="4" height="2" rx="1"><title>2005-08-31: 0</title></rect>
+          
+          
+          <rect class="" x="78" y="2.0" width="4" height="20.0" rx="1"><title>2005-09-01: 45</title></rect>
+          
+        </svg>14d
+      </span>
+    </div>
+    <p class="summary">The Discovery service is experiencing frequent failures retrieving node assembly information, likely due to network connectivity issues between the Discovery server and the affected nodes. This impacts the ability to properly identify and manage resources on the supercomputer.  Next, investigate network latency and packet loss between the Discovery server and a representative set of nodes experiencing the failures using `ping` and `traceroute`. <span class="src">[ollama:gemma3:4b]</span></p>
+    <details>
+      <summary>Templates and sample lines</summary>
+      <pre>Can not get assembly information for node card
+</pre>
+      <pre>Can not get assembly information for node card
+</pre>
+    </details>
+  </article>
+  
+  <article class="sig">
+    <div class="sig-head">
+      <span class="id">SIG-0071</span>
+      <span class="badge b-noise">Benign noise</span>
+      <span class="meta">45 lines · 30 nodes · DISCOVERY/ERROR ·
+        BENIGN (0% alerts) · first seen 2005-06-08</span>
+      <span class="spark" title="Occurrences over the last 14 days">
+        <svg width="84" height="22" viewBox="0 0 84 22" role="img" aria-label="Daily counts, last 14 days: 15, 0, 0, 0, 0, 45, 0, 0, 27, 0, 30, 15, 0, 45">
+          
+          
+          
+          <rect class="" x="0" y="15.3" width="4" height="6.7" rx="1"><title>2005-08-19: 15</title></rect>
+          
+          
+          <rect class="zero" x="6" y="20" width="4" height="2" rx="1"><title>2005-08-20: 0</title></rect>
+          
+          
+          <rect class="zero" x="12" y="20" width="4" height="2" rx="1"><title>2005-08-21: 0</title></rect>
+          
+          
+          <rect class="zero" x="18" y="20" width="4" height="2" rx="1"><title>2005-08-22: 0</title></rect>
+          
+          
+          <rect class="zero" x="24" y="20" width="4" height="2" rx="1"><title>2005-08-23: 0</title></rect>
+          
+          
+          <rect class="" x="30" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-24: 45</title></rect>
+          
+          
+          <rect class="zero" x="36" y="20" width="4" height="2" rx="1"><title>2005-08-25: 0</title></rect>
+          
+          
+          <rect class="zero" x="42" y="20" width="4" height="2" rx="1"><title>2005-08-26: 0</title></rect>
+          
+          
+          <rect class="" x="48" y="10.0" width="4" height="12.0" rx="1"><title>2005-08-27: 27</title></rect>
+          
+          
+          <rect class="zero" x="54" y="20" width="4" height="2" rx="1"><title>2005-08-28: 0</title></rect>
+          
+          
+          <rect class="" x="60" y="8.7" width="4" height="13.3" rx="1"><title>2005-08-29: 30</title></rect>
+          
+          
+          <rect class="" x="66" y="15.3" width="4" height="6.7" rx="1"><title>2005-08-30: 15</title></rect>
+          
+          
+          <rect class="zero" x="72" y="20" width="4" height="2" rx="1"><title>2005-08-31: 0</title></rect>
+          
+          
+          <rect class="" x="78" y="2.0" width="4" height="20.0" rx="1"><title>2005-09-01: 45</title></rect>
+          
+        </svg>14d
+      </span>
+    </div>
+    <p class="summary">The persistent PGOOD ERROR LATCH indicates a power supply issue on the MPGOOD rail, likely due to transient fluctuations. This is affecting the discovery service, causing repeated errors.  Next, we should monitor the 2.5V rail voltage closely for spikes or dips during discovery attempts. <span class="src">[ollama:gemma3:4b]</span></p>
+    <details>
+      <summary>Templates and sample lines</summary>
+      <pre>Node card status: no ALERTs are active. Clock Mode is Low. Clock Select is Midplane. Phy JTAG Reset is asserted. ASIC JTAG Reset is asserted. Temperature Mask is not active. No temperature error. Temperature Limit Error Latch is clear. PGOOD IS NOT ASSERTED. PGOOD ERROR LATCH IS ACTIVE. MPGOOD IS NOT OK. MPGOOD ERROR LATCH IS ACTIVE. The &lt;NUM&gt; volt rail is OK. The &lt;NUM&gt; volt rail is OK.
+</pre>
+      <pre>Node card status: no ALERTs are active. Clock Mode is Low. Clock Select is Midplane. Phy JTAG Reset is asserted. ASIC JTAG Reset is asserted. Temperature Mask is not active. No temperature error. Temperature Limit Error Latch is clear. PGOOD IS NOT ASSERTED. PGOOD ERROR LATCH IS ACTIVE. MPGOOD IS NOT OK. MPGOOD ERROR LATCH IS ACTIVE. The 2.5 volt rail is OK. The 1.5 volt rail is OK.
+</pre>
+    </details>
+  </article>
+  
+  <article class="sig">
+    <div class="sig-head">
+      <span class="id">SIG-0028</span>
+      <span class="badge b-noise">Benign noise</span>
+      <span class="meta">5 lines · 1 nodes · KERNEL/FATAL ·
+        BENIGN (0% alerts) · first seen 2005-06-05</span>
+      <span class="spark" title="Occurrences over the last 14 days">
+        <svg width="84" height="22" viewBox="0 0 84 22" role="img" aria-label="Daily counts, last 14 days: 0, 0, 8, 0, 0, 8, 0, 8, 0, 0, 0, 0, 8, 5">
+          
+          
+          
+          <rect class="zero" x="0" y="20" width="4" height="2" rx="1"><title>2005-08-19: 0</title></rect>
+          
+          
+          <rect class="zero" x="6" y="20" width="4" height="2" rx="1"><title>2005-08-20: 0</title></rect>
+          
+          
+          <rect class="" x="12" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-21: 8</title></rect>
+          
+          
+          <rect class="zero" x="18" y="20" width="4" height="2" rx="1"><title>2005-08-22: 0</title></rect>
+          
+          
+          <rect class="zero" x="24" y="20" width="4" height="2" rx="1"><title>2005-08-23: 0</title></rect>
+          
+          
+          <rect class="" x="30" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-24: 8</title></rect>
+          
+          
+          <rect class="zero" x="36" y="20" width="4" height="2" rx="1"><title>2005-08-25: 0</title></rect>
+          
+          
+          <rect class="" x="42" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-26: 8</title></rect>
+          
+          
+          <rect class="zero" x="48" y="20" width="4" height="2" rx="1"><title>2005-08-27: 0</title></rect>
+          
+          
+          <rect class="zero" x="54" y="20" width="4" height="2" rx="1"><title>2005-08-28: 0</title></rect>
+          
+          
+          <rect class="zero" x="60" y="20" width="4" height="2" rx="1"><title>2005-08-29: 0</title></rect>
+          
+          
+          <rect class="zero" x="66" y="20" width="4" height="2" rx="1"><title>2005-08-30: 0</title></rect>
+          
+          
+          <rect class="" x="72" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-31: 8</title></rect>
+          
+          
+          <rect class="" x="78" y="9.5" width="4" height="12.5" rx="1"><title>2005-09-01: 5</title></rect>
+          
+        </svg>14d
+      </span>
+    </div>
+    <p class="summary">The root cause is a kernel-level memory corruption likely due to a hardware fault. This is affecting the stability of a single node, causing fatal errors.  Next, run memory diagnostics on the affected node to identify potential hardware issues. <span class="src">[ollama:gemma3:4b]</span></p>
+    <details>
+      <summary>Templates and sample lines</summary>
+      <pre>&lt;NUM&gt;:&lt;HEX&gt; &lt;NUM&gt;:&lt;HEX&gt; &lt;NUM&gt;:&lt;HEX&gt; &lt;NUM&gt;:&lt;HEX&gt;
+</pre>
+      <pre>0:00010800 1:1fea9d90 2:1eeeeeee 3:1b39c000
+4:18707ff0 5:10105280 6:1b3ac800 7:00002100
+8:1b3ac800 9:00010800 10:10115a80 11:00002100
+</pre>
+    </details>
+  </article>
+  
+  <article class="sig">
+    <div class="sig-head">
+      <span class="id">SIG-0080</span>
+      <span class="badge b-noise">Benign noise</span>
+      <span class="meta">5 lines · 1 nodes · KERNEL/FATAL ·
+        BENIGN (0% alerts) · first seen 2005-06-15</span>
+      <span class="spark" title="Occurrences over the last 14 days">
+        <svg width="84" height="22" viewBox="0 0 84 22" role="img" aria-label="Daily counts, last 14 days: 0, 0, 0, 0, 0, 0, 0, 0, 0, 70, 0, 3, 1, 5">
+          
+          
+          
+          <rect class="zero" x="0" y="20" width="4" height="2" rx="1"><title>2005-08-19: 0</title></rect>
+          
+          
+          <rect class="zero" x="6" y="20" width="4" height="2" rx="1"><title>2005-08-20: 0</title></rect>
+          
+          
+          <rect class="zero" x="12" y="20" width="4" height="2" rx="1"><title>2005-08-21: 0</title></rect>
+          
+          
+          <rect class="zero" x="18" y="20" width="4" height="2" rx="1"><title>2005-08-22: 0</title></rect>
+          
+          
+          <rect class="zero" x="24" y="20" width="4" height="2" rx="1"><title>2005-08-23: 0</title></rect>
+          
+          
+          <rect class="zero" x="30" y="20" width="4" height="2" rx="1"><title>2005-08-24: 0</title></rect>
+          
+          
+          <rect class="zero" x="36" y="20" width="4" height="2" rx="1"><title>2005-08-25: 0</title></rect>
+          
+          
+          <rect class="zero" x="42" y="20" width="4" height="2" rx="1"><title>2005-08-26: 0</title></rect>
+          
+          
+          <rect class="zero" x="48" y="20" width="4" height="2" rx="1"><title>2005-08-27: 0</title></rect>
+          
+          
+          <rect class="" x="54" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-28: 70</title></rect>
+          
+          
+          <rect class="zero" x="60" y="20" width="4" height="2" rx="1"><title>2005-08-29: 0</title></rect>
+          
+          
+          <rect class="" x="66" y="19" width="4" height="3" rx="1"><title>2005-08-30: 3</title></rect>
+          
+          
+          <rect class="" x="72" y="19" width="4" height="3" rx="1"><title>2005-08-31: 1</title></rect>
+          
+          
+          <rect class="" x="78" y="19" width="4" height="3" rx="1"><title>2005-09-01: 5</title></rect>
+          
+        </svg>14d
+      </span>
+    </div>
+    <p class="summary">The root cause is excessive torus sender retransmissions likely due to network congestion. This is impacting the performance of the kernel and potentially other applications utilizing the torus network.  Next, investigate network bandwidth utilization and packet loss rates on the affected nodes to pinpoint the source of the congestion. <span class="src">[ollama:gemma3:4b]</span></p>
+    <details>
+      <summary>Templates and sample lines</summary>
+      <pre>external input interrupt (unit &lt;HEX&gt; bit &lt;HEX&gt;): torus sender &lt;*&gt; retransmission error was corrected
+</pre>
+      <pre>external input interrupt (unit=0x02 bit=0x0e): torus sender z- retransmission error was corrected
+</pre>
+    </details>
+  </article>
+  
+  <article class="sig">
+    <div class="sig-head">
+      <span class="id">SIG-0005</span>
+      <span class="badge b-noise">Benign noise</span>
+      <span class="meta">3 lines · 1 nodes · KERNEL/FATAL ·
+        BENIGN (0% alerts) · first seen 2005-06-05</span>
+      <span class="spark" title="Occurrences over the last 14 days">
+        <svg width="84" height="22" viewBox="0 0 84 22" role="img" aria-label="Daily counts, last 14 days: 2, 3, 3, 6, 6, 3, 2, 3, 7, 0, 4, 3, 3, 3">
+          
+          
+          
+          <rect class="" x="0" y="16.3" width="4" height="5.7" rx="1"><title>2005-08-19: 2</title></rect>
+          
+          
+          <rect class="" x="6" y="13.4" width="4" height="8.6" rx="1"><title>2005-08-20: 3</title></rect>
+          
+          
+          <rect class="" x="12" y="13.4" width="4" height="8.6" rx="1"><title>2005-08-21: 3</title></rect>
+          
+          
+          <rect class="" x="18" y="4.899999999999999" width="4" height="17.1" rx="1"><title>2005-08-22: 6</title></rect>
+          
+          
+          <rect class="" x="24" y="4.899999999999999" width="4" height="17.1" rx="1"><title>2005-08-23: 6</title></rect>
+          
+          
+          <rect class="" x="30" y="13.4" width="4" height="8.6" rx="1"><title>2005-08-24: 3</title></rect>
+          
+          
+          <rect class="" x="36" y="16.3" width="4" height="5.7" rx="1"><title>2005-08-25: 2</title></rect>
+          
+          
+          <rect class="" x="42" y="13.4" width="4" height="8.6" rx="1"><title>2005-08-26: 3</title></rect>
+          
+          
+          <rect class="" x="48" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-27: 7</title></rect>
+          
+          
+          <rect class="zero" x="54" y="20" width="4" height="2" rx="1"><title>2005-08-28: 0</title></rect>
+          
+          
+          <rect class="" x="60" y="10.6" width="4" height="11.4" rx="1"><title>2005-08-29: 4</title></rect>
+          
+          
+          <rect class="" x="66" y="13.4" width="4" height="8.6" rx="1"><title>2005-08-30: 3</title></rect>
+          
+          
+          <rect class="" x="72" y="13.4" width="4" height="8.6" rx="1"><title>2005-08-31: 3</title></rect>
+          
+          
+          <rect class="" x="78" y="13.4" width="4" height="8.6" rx="1"><title>2005-09-01: 3</title></rect>
+          
+        </svg>14d
+      </span>
+    </div>
+    <p class="summary">Likely cause: This FATAL kernel error, identified by instruction address 0x0010dc6c, suggests a transient hardware issue within the kernel itself. It is affecting the stability of a single node, potentially leading to unpredictable behavior. Next, we should run a memory test on the affected node to rule out faulty RAM. <span class="src">[ollama:gemma3:4b]</span></p>
+    <details>
+      <summary>Templates and sample lines</summary>
+      <pre>instruction &lt;*&gt; &lt;*&gt; &lt;NUM&gt;
+instruction address: &lt;HEX&gt;
+</pre>
+      <pre>instruction address: 0x0010dc6c
+instruction plb error.............0
+instruction address space.........0
+</pre>
+    </details>
+  </article>
+  
+  <article class="sig">
+    <div class="sig-head">
+      <span class="id">SIG-0010</span>
+      <span class="badge b-noise">Benign noise</span>
+      <span class="meta">3 lines · 1 nodes · KERNEL/FATAL ·
+        BENIGN (0% alerts) · first seen 2005-06-05</span>
+      <span class="spark" title="Occurrences over the last 14 days">
+        <svg width="84" height="22" viewBox="0 0 84 22" role="img" aria-label="Daily counts, last 14 days: 3, 3, 3, 9, 0, 3, 3, 3, 9, 0, 6, 3, 3, 3">
+          
+          
+          
+          <rect class="" x="0" y="15.3" width="4" height="6.7" rx="1"><title>2005-08-19: 3</title></rect>
+          
+          
+          <rect class="" x="6" y="15.3" width="4" height="6.7" rx="1"><title>2005-08-20: 3</title></rect>
+          
+          
+          <rect class="" x="12" y="15.3" width="4" height="6.7" rx="1"><title>2005-08-21: 3</title></rect>
+          
+          
+          <rect class="" x="18" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-22: 9</title></rect>
+          
+          
+          <rect class="zero" x="24" y="20" width="4" height="2" rx="1"><title>2005-08-23: 0</title></rect>
+          
+          
+          <rect class="" x="30" y="15.3" width="4" height="6.7" rx="1"><title>2005-08-24: 3</title></rect>
+          
+          
+          <rect class="" x="36" y="15.3" width="4" height="6.7" rx="1"><title>2005-08-25: 3</title></rect>
+          
+          
+          <rect class="" x="42" y="15.3" width="4" height="6.7" rx="1"><title>2005-08-26: 3</title></rect>
+          
+          
+          <rect class="" x="48" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-27: 9</title></rect>
+          
+          
+          <rect class="zero" x="54" y="20" width="4" height="2" rx="1"><title>2005-08-28: 0</title></rect>
+          
+          
+          <rect class="" x="60" y="8.7" width="4" height="13.3" rx="1"><title>2005-08-29: 6</title></rect>
+          
+          
+          <rect class="" x="66" y="15.3" width="4" height="6.7" rx="1"><title>2005-08-30: 3</title></rect>
+          
+          
+          <rect class="" x="72" y="15.3" width="4" height="6.7" rx="1"><title>2005-08-31: 3</title></rect>
+          
+          
+          <rect class="" x="78" y="15.3" width="4" height="6.7" rx="1"><title>2005-09-01: 3</title></rect>
+          
+        </svg>14d
+      </span>
+    </div>
+    <p class="summary">Likely cause: The system is experiencing frequent parity errors in the d-cache, potentially due to hardware degradation or intermittent power fluctuations. This affects data integrity and processing performance on the affected node. Next step: Run a memory diagnostic test on the node to identify potential hardware faults. <span class="src">[ollama:gemma3:4b]</span></p>
+    <details>
+      <summary>Templates and sample lines</summary>
+      <pre>d-cache &lt;*&gt; parity error &lt;NUM&gt;
+i-cache parity error &lt;NUM&gt;
+</pre>
+      <pre>i-cache parity error..............0
+d-cache search parity error.......1
+d-cache flush parity error........0
+</pre>
+    </details>
+  </article>
+  
+  <article class="sig">
+    <div class="sig-head">
+      <span class="id">SIG-0009</span>
+      <span class="badge b-noise">Benign noise</span>
+      <span class="meta">2 lines · 1 nodes · KERNEL/FATAL ·
+        BENIGN (0% alerts) · first seen 2005-06-05</span>
+      <span class="spark" title="Occurrences over the last 14 days">
+        <svg width="84" height="22" viewBox="0 0 84 22" role="img" aria-label="Daily counts, last 14 days: 2, 2, 2, 6, 0, 2, 2, 2, 6, 0, 4, 2, 2, 2">
+          
+          
+          
+          <rect class="" x="0" y="15.3" width="4" height="6.7" rx="1"><title>2005-08-19: 2</title></rect>
+          
+          
+          <rect class="" x="6" y="15.3" width="4" height="6.7" rx="1"><title>2005-08-20: 2</title></rect>
+          
+          
+          <rect class="" x="12" y="15.3" width="4" height="6.7" rx="1"><title>2005-08-21: 2</title></rect>
+          
+          
+          <rect class="" x="18" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-22: 6</title></rect>
+          
+          
+          <rect class="zero" x="24" y="20" width="4" height="2" rx="1"><title>2005-08-23: 0</title></rect>
+          
+          
+          <rect class="" x="30" y="15.3" width="4" height="6.7" rx="1"><title>2005-08-24: 2</title></rect>
+          
+          
+          <rect class="" x="36" y="15.3" width="4" height="6.7" rx="1"><title>2005-08-25: 2</title></rect>
+          
+          
+          <rect class="" x="42" y="15.3" width="4" height="6.7" rx="1"><title>2005-08-26: 2</title></rect>
+          
+          
+          <rect class="" x="48" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-27: 6</title></rect>
+          
+          
+          <rect class="zero" x="54" y="20" width="4" height="2" rx="1"><title>2005-08-28: 0</title></rect>
+          
+          
+          <rect class="" x="60" y="8.7" width="4" height="13.3" rx="1"><title>2005-08-29: 4</title></rect>
+          
+          
+          <rect class="" x="66" y="15.3" width="4" height="6.7" rx="1"><title>2005-08-30: 2</title></rect>
+          
+          
+          <rect class="" x="72" y="15.3" width="4" height="6.7" rx="1"><title>2005-08-31: 2</title></rect>
+          
+          
+          <rect class="" x="78" y="15.3" width="4" height="6.7" rx="1"><title>2005-09-01: 2</title></rect>
+          
+        </svg>14d
+      </span>
+    </div>
+    <p class="summary">Likely cause: This recurring &#34;plb error&#34; within the kernel suggests a transient problem with the processor&#39;s parity buffer. Affected: This impacts data transfer operations, potentially leading to corrupted data. Next step: Examine the node&#39;s system logs for specific timing correlations with the PLB errors to identify potential hardware or software triggers. <span class="src">[ollama:gemma3:4b]</span></p>
+    <details>
+      <summary>Templates and sample lines</summary>
+      <pre>data &lt;*&gt; plb error &lt;NUM&gt;
+</pre>
+      <pre>data read plb error...............0
+data write plb error..............0
+</pre>
+    </details>
+  </article>
+  
+  <article class="sig">
+    <div class="sig-head">
+      <span class="id">SIG-0014</span>
+      <span class="badge b-noise">Benign noise</span>
+      <span class="meta">2 lines · 1 nodes · KERNEL/FATAL ·
+        BENIGN (0% alerts) · first seen 2005-06-05</span>
+      <span class="spark" title="Occurrences over the last 14 days">
+        <svg width="84" height="22" viewBox="0 0 84 22" role="img" aria-label="Daily counts, last 14 days: 0, 2, 2, 4, 8, 2, 2, 2, 4, 0, 2, 2, 2, 2">
+          
+          
+          
+          <rect class="zero" x="0" y="20" width="4" height="2" rx="1"><title>2005-08-19: 0</title></rect>
+          
+          
+          <rect class="" x="6" y="17.0" width="4" height="5.0" rx="1"><title>2005-08-20: 2</title></rect>
+          
+          
+          <rect class="" x="12" y="17.0" width="4" height="5.0" rx="1"><title>2005-08-21: 2</title></rect>
+          
+          
+          <rect class="" x="18" y="12.0" width="4" height="10.0" rx="1"><title>2005-08-22: 4</title></rect>
+          
+          
+          <rect class="" x="24" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-23: 8</title></rect>
+          
+          
+          <rect class="" x="30" y="17.0" width="4" height="5.0" rx="1"><title>2005-08-24: 2</title></rect>
+          
+          
+          <rect class="" x="36" y="17.0" width="4" height="5.0" rx="1"><title>2005-08-25: 2</title></rect>
+          
+          
+          <rect class="" x="42" y="17.0" width="4" height="5.0" rx="1"><title>2005-08-26: 2</title></rect>
+          
+          
+          <rect class="" x="48" y="12.0" width="4" height="10.0" rx="1"><title>2005-08-27: 4</title></rect>
+          
+          
+          <rect class="zero" x="54" y="20" width="4" height="2" rx="1"><title>2005-08-28: 0</title></rect>
+          
+          
+          <rect class="" x="60" y="17.0" width="4" height="5.0" rx="1"><title>2005-08-29: 2</title></rect>
+          
+          
+          <rect class="" x="66" y="17.0" width="4" height="5.0" rx="1"><title>2005-08-30: 2</title></rect>
+          
+          
+          <rect class="" x="72" y="17.0" width="4" height="5.0" rx="1"><title>2005-08-31: 2</title></rect>
+          
+          
+          <rect class="" x="78" y="17.0" width="4" height="5.0" rx="1"><title>2005-09-01: 2</title></rect>
+          
+        </svg>14d
+      </span>
+    </div>
+    <p class="summary">Likely Cause: The system is experiencing frequent fatal errors related to interrupt enable signals, likely due to a transient hardware issue. This affects kernel stability and potentially processing performance on the affected nodes. Next step: Investigate the hardware logs on the impacted nodes for specific interrupt source details and timing information. <span class="src">[ollama:gemma3:4b]</span></p>
+    <details>
+      <summary>Templates and sample lines</summary>
+      <pre>critical input interrupt enable &lt;NUM&gt;
+external input interrupt enable &lt;NUM&gt;
+</pre>
+      <pre>critical input interrupt enable...1
+external input interrupt enable...1
+</pre>
+    </details>
+  </article>
+  
+  <article class="sig">
+    <div class="sig-head">
+      <span class="id">SIG-0018</span>
+      <span class="badge b-noise">Benign noise</span>
+      <span class="meta">2 lines · 1 nodes · KERNEL/FATAL ·
+        BENIGN (0% alerts) · first seen 2005-06-05</span>
+      <span class="spark" title="Occurrences over the last 14 days">
+        <svg width="84" height="22" viewBox="0 0 84 22" role="img" aria-label="Daily counts, last 14 days: 0, 2, 2, 2, 4, 2, 0, 2, 2, 0, 0, 2, 2, 2">
+          
+          
+          
+          <rect class="zero" x="0" y="20" width="4" height="2" rx="1"><title>2005-08-19: 0</title></rect>
+          
+          
+          <rect class="" x="6" y="12.0" width="4" height="10.0" rx="1"><title>2005-08-20: 2</title></rect>
+          
+          
+          <rect class="" x="12" y="12.0" width="4" height="10.0" rx="1"><title>2005-08-21: 2</title></rect>
+          
+          
+          <rect class="" x="18" y="12.0" width="4" height="10.0" rx="1"><title>2005-08-22: 2</title></rect>
+          
+          
+          <rect class="" x="24" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-23: 4</title></rect>
+          
+          
+          <rect class="" x="30" y="12.0" width="4" height="10.0" rx="1"><title>2005-08-24: 2</title></rect>
+          
+          
+          <rect class="zero" x="36" y="20" width="4" height="2" rx="1"><title>2005-08-25: 0</title></rect>
+          
+          
+          <rect class="" x="42" y="12.0" width="4" height="10.0" rx="1"><title>2005-08-26: 2</title></rect>
+          
+          
+          <rect class="" x="48" y="12.0" width="4" height="10.0" rx="1"><title>2005-08-27: 2</title></rect>
+          
+          
+          <rect class="zero" x="54" y="20" width="4" height="2" rx="1"><title>2005-08-28: 0</title></rect>
+          
+          
+          <rect class="zero" x="60" y="20" width="4" height="2" rx="1"><title>2005-08-29: 0</title></rect>
+          
+          
+          <rect class="" x="66" y="12.0" width="4" height="10.0" rx="1"><title>2005-08-30: 2</title></rect>
+          
+          
+          <rect class="" x="72" y="12.0" width="4" height="10.0" rx="1"><title>2005-08-31: 2</title></rect>
+          
+          
+          <rect class="" x="78" y="12.0" width="4" height="10.0" rx="1"><title>2005-09-01: 2</title></rect>
+          
+        </svg>14d
+      </span>
+    </div>
+    <p class="summary">The root cause is a persistent, low-priority floating-point execution mode setting, likely triggered by a configuration conflict. This is affecting the performance of the kernel due to incorrect floating-point calculations. Next, investigate the node configuration to identify and correct the conflicting floating-point execution mode setting. <span class="src">[ollama:gemma3:4b]</span></p>
+    <details>
+      <summary>Templates and sample lines</summary>
+      <pre>floating pt ex mode &lt;NUM&gt; enable &lt;NUM&gt;
+</pre>
+      <pre>floating pt ex mode 0 enable......1
+floating pt ex mode 1 enable......1
+</pre>
+    </details>
+  </article>
+  
+  <article class="sig">
+    <div class="sig-head">
+      <span class="id">SIG-0019</span>
+      <span class="badge b-noise">Benign noise</span>
+      <span class="meta">2 lines · 1 nodes · KERNEL/FATAL ·
+        BENIGN (0% alerts) · first seen 2005-06-05</span>
+      <span class="spark" title="Occurrences over the last 14 days">
+        <svg width="84" height="22" viewBox="0 0 84 22" role="img" aria-label="Daily counts, last 14 days: 0, 2, 2, 1, 4, 2, 0, 2, 2, 0, 0, 2, 2, 2">
+          
+          
+          
+          <rect class="zero" x="0" y="20" width="4" height="2" rx="1"><title>2005-08-19: 0</title></rect>
+          
+          
+          <rect class="" x="6" y="12.0" width="4" height="10.0" rx="1"><title>2005-08-20: 2</title></rect>
+          
+          
+          <rect class="" x="12" y="12.0" width="4" height="10.0" rx="1"><title>2005-08-21: 2</title></rect>
+          
+          
+          <rect class="" x="18" y="17.0" width="4" height="5.0" rx="1"><title>2005-08-22: 1</title></rect>
+          
+          
+          <rect class="" x="24" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-23: 4</title></rect>
+          
+          
+          <rect class="" x="30" y="12.0" width="4" height="10.0" rx="1"><title>2005-08-24: 2</title></rect>
+          
+          
+          <rect class="zero" x="36" y="20" width="4" height="2" rx="1"><title>2005-08-25: 0</title></rect>
+          
+          
+          <rect class="" x="42" y="12.0" width="4" height="10.0" rx="1"><title>2005-08-26: 2</title></rect>
+          
+          
+          <rect class="" x="48" y="12.0" width="4" height="10.0" rx="1"><title>2005-08-27: 2</title></rect>
+          
+          
+          <rect class="zero" x="54" y="20" width="4" height="2" rx="1"><title>2005-08-28: 0</title></rect>
+          
+          
+          <rect class="zero" x="60" y="20" width="4" height="2" rx="1"><title>2005-08-29: 0</title></rect>
+          
+          
+          <rect class="" x="66" y="12.0" width="4" height="10.0" rx="1"><title>2005-08-30: 2</title></rect>
+          
+          
+          <rect class="" x="72" y="12.0" width="4" height="10.0" rx="1"><title>2005-08-31: 2</title></rect>
+          
+          
+          <rect class="" x="78" y="12.0" width="4" height="10.0" rx="1"><title>2005-09-01: 2</title></rect>
+          
+        </svg>14d
+      </span>
+    </div>
+    <p class="summary">The kernel is experiencing fatal errors, likely due to a timing issue related to interrupt handling. This is impacting the stability of the node and potentially causing intermittent service disruptions.  Enable the &#34;debug interrupt enable&#34; template on the affected node to capture interrupt-related data during the error occurrence. <span class="src">[ollama:gemma3:4b]</span></p>
+    <details>
+      <summary>Templates and sample lines</summary>
+      <pre>debug &lt;*&gt; enable &lt;NUM&gt;
+</pre>
+      <pre>debug wait enable.................0
+debug interrupt enable............0
+</pre>
+    </details>
+  </article>
+  
+  <article class="sig">
+    <div class="sig-head">
+      <span class="id">SIG-0022</span>
+      <span class="badge b-noise">Benign noise</span>
+      <span class="meta">2 lines · 1 nodes · KERNEL/FATAL ·
+        BENIGN (0% alerts) · first seen 2005-06-05</span>
+      <span class="spark" title="Occurrences over the last 14 days">
+        <svg width="84" height="22" viewBox="0 0 84 22" role="img" aria-label="Daily counts, last 14 days: 0, 2, 2, 0, 1, 3, 0, 2, 0, 0, 0, 2, 3, 2">
+          
+          
+          
+          <rect class="zero" x="0" y="20" width="4" height="2" rx="1"><title>2005-08-19: 0</title></rect>
+          
+          
+          <rect class="" x="6" y="8.7" width="4" height="13.3" rx="1"><title>2005-08-20: 2</title></rect>
+          
+          
+          <rect class="" x="12" y="8.7" width="4" height="13.3" rx="1"><title>2005-08-21: 2</title></rect>
+          
+          
+          <rect class="zero" x="18" y="20" width="4" height="2" rx="1"><title>2005-08-22: 0</title></rect>
+          
+          
+          <rect class="" x="24" y="15.3" width="4" height="6.7" rx="1"><title>2005-08-23: 1</title></rect>
+          
+          
+          <rect class="" x="30" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-24: 3</title></rect>
+          
+          
+          <rect class="zero" x="36" y="20" width="4" height="2" rx="1"><title>2005-08-25: 0</title></rect>
+          
+          
+          <rect class="" x="42" y="8.7" width="4" height="13.3" rx="1"><title>2005-08-26: 2</title></rect>
+          
+          
+          <rect class="zero" x="48" y="20" width="4" height="2" rx="1"><title>2005-08-27: 0</title></rect>
+          
+          
+          <rect class="zero" x="54" y="20" width="4" height="2" rx="1"><title>2005-08-28: 0</title></rect>
+          
+          
+          <rect class="zero" x="60" y="20" width="4" height="2" rx="1"><title>2005-08-29: 0</title></rect>
+          
+          
+          <rect class="" x="66" y="8.7" width="4" height="13.3" rx="1"><title>2005-08-30: 2</title></rect>
+          
+          
+          <rect class="" x="72" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-31: 3</title></rect>
+          
+          
+          <rect class="" x="78" y="8.7" width="4" height="13.3" rx="1"><title>2005-09-01: 2</title></rect>
+          
+        </svg>14d
+      </span>
+    </div>
+    <p class="summary">Likely cause: unrecognised failure pattern; needs manual review. Seen 2 times today on 1 node(s) (component KERNEL, level FATAL); classifier says BENIGN. <span class="src">[rules]</span></p>
+    <details>
+      <summary>Templates and sample lines</summary>
+      <pre>disable &lt;*&gt; &lt;*&gt; &lt;NUM&gt;
+</pre>
+      <pre>disable store gathering..................0
+disable trace broadcast..................0
+</pre>
+    </details>
+  </article>
+  
+  <article class="sig">
+    <div class="sig-head">
+      <span class="id">SIG-0024</span>
+      <span class="badge b-noise">Benign noise</span>
+      <span class="meta">2 lines · 1 nodes · KERNEL/FATAL ·
+        BENIGN (0% alerts) · first seen 2005-06-05</span>
+      <span class="spark" title="Occurrences over the last 14 days">
+        <svg width="84" height="22" viewBox="0 0 84 22" role="img" aria-label="Daily counts, last 14 days: 0, 1, 2, 0, 0, 2, 0, 2, 0, 0, 0, 0, 2, 2">
+          
+          
+          
+          <rect class="zero" x="0" y="20" width="4" height="2" rx="1"><title>2005-08-19: 0</title></rect>
+          
+          
+          <rect class="" x="6" y="12.0" width="4" height="10.0" rx="1"><title>2005-08-20: 1</title></rect>
+          
+          
+          <rect class="" x="12" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-21: 2</title></rect>
+          
+          
+          <rect class="zero" x="18" y="20" width="4" height="2" rx="1"><title>2005-08-22: 0</title></rect>
+          
+          
+          <rect class="zero" x="24" y="20" width="4" height="2" rx="1"><title>2005-08-23: 0</title></rect>
+          
+          
+          <rect class="" x="30" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-24: 2</title></rect>
+          
+          
+          <rect class="zero" x="36" y="20" width="4" height="2" rx="1"><title>2005-08-25: 0</title></rect>
+          
+          
+          <rect class="" x="42" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-26: 2</title></rect>
+          
+          
+          <rect class="zero" x="48" y="20" width="4" height="2" rx="1"><title>2005-08-27: 0</title></rect>
+          
+          
+          <rect class="zero" x="54" y="20" width="4" height="2" rx="1"><title>2005-08-28: 0</title></rect>
+          
+          
+          <rect class="zero" x="60" y="20" width="4" height="2" rx="1"><title>2005-08-29: 0</title></rect>
+          
+          
+          <rect class="zero" x="66" y="20" width="4" height="2" rx="1"><title>2005-08-30: 0</title></rect>
+          
+          
+          <rect class="" x="72" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-31: 2</title></rect>
+          
+          
+          <rect class="" x="78" y="2.0" width="4" height="20.0" rx="1"><title>2005-09-01: 2</title></rect>
+          
+        </svg>14d
+      </span>
+    </div>
+    <p class="summary">Likely cause: unrecognised failure pattern; needs manual review. Seen 2 times today on 1 node(s) (component KERNEL, level FATAL); classifier says BENIGN. <span class="src">[rules]</span></p>
+    <details>
+      <summary>Templates and sample lines</summary>
+      <pre>guaranteed instruction cache block touch.&lt;NUM&gt;
+guaranteed data cache block touch &lt;NUM&gt;
+</pre>
+      <pre>guaranteed instruction cache block touch.0
+guaranteed data cache block touch........1
+</pre>
+    </details>
+  </article>
+  
+  <article class="sig">
+    <div class="sig-head">
+      <span class="id">SIG-0026</span>
+      <span class="badge b-noise">Benign noise</span>
+      <span class="meta">2 lines · 1 nodes · KERNEL/FATAL ·
+        BENIGN (0% alerts) · first seen 2005-06-05</span>
+      <span class="spark" title="Occurrences over the last 14 days">
+        <svg width="84" height="22" viewBox="0 0 84 22" role="img" aria-label="Daily counts, last 14 days: 0, 0, 2, 0, 0, 2, 0, 2, 0, 0, 0, 0, 2, 2">
+          
+          
+          
+          <rect class="zero" x="0" y="20" width="4" height="2" rx="1"><title>2005-08-19: 0</title></rect>
+          
+          
+          <rect class="zero" x="6" y="20" width="4" height="2" rx="1"><title>2005-08-20: 0</title></rect>
+          
+          
+          <rect class="" x="12" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-21: 2</title></rect>
+          
+          
+          <rect class="zero" x="18" y="20" width="4" height="2" rx="1"><title>2005-08-22: 0</title></rect>
+          
+          
+          <rect class="zero" x="24" y="20" width="4" height="2" rx="1"><title>2005-08-23: 0</title></rect>
+          
+          
+          <rect class="" x="30" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-24: 2</title></rect>
+          
+          
+          <rect class="zero" x="36" y="20" width="4" height="2" rx="1"><title>2005-08-25: 0</title></rect>
+          
+          
+          <rect class="" x="42" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-26: 2</title></rect>
+          
+          
+          <rect class="zero" x="48" y="20" width="4" height="2" rx="1"><title>2005-08-27: 0</title></rect>
+          
+          
+          <rect class="zero" x="54" y="20" width="4" height="2" rx="1"><title>2005-08-28: 0</title></rect>
+          
+          
+          <rect class="zero" x="60" y="20" width="4" height="2" rx="1"><title>2005-08-29: 0</title></rect>
+          
+          
+          <rect class="zero" x="66" y="20" width="4" height="2" rx="1"><title>2005-08-30: 0</title></rect>
+          
+          
+          <rect class="" x="72" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-31: 2</title></rect>
+          
+          
+          <rect class="" x="78" y="2.0" width="4" height="20.0" rx="1"><title>2005-09-01: 2</title></rect>
+          
+        </svg>14d
+      </span>
+    </div>
+    <p class="summary">Likely cause: unrecognised failure pattern; needs manual review. Seen 2 times today on 1 node(s) (component KERNEL, level FATAL); classifier says BENIGN. <span class="src">[rules]</span></p>
+    <details>
+      <summary>Templates and sample lines</summary>
+      <pre>icache prefetch &lt;*&gt; &lt;NUM&gt;
+</pre>
+      <pre>icache prefetch depth....................0
+icache prefetch threshold................0
+</pre>
+    </details>
+  </article>
+  
+  <article class="sig">
+    <div class="sig-head">
+      <span class="id">SIG-0004</span>
+      <span class="badge b-noise">Benign noise</span>
+      <span class="meta">1 lines · 1 nodes · KERNEL/FATAL ·
+        BENIGN (0% alerts) · first seen 2005-06-05</span>
+      <span class="spark" title="Occurrences over the last 14 days">
+        <svg width="84" height="22" viewBox="0 0 84 22" role="img" aria-label="Daily counts, last 14 days: 1, 1, 1, 3, 4, 1, 1, 1, 3, 0, 2, 1, 1, 1">
+          
+          
+          
+          <rect class="" x="0" y="17.0" width="4" height="5.0" rx="1"><title>2005-08-19: 1</title></rect>
+          
+          
+          <rect class="" x="6" y="17.0" width="4" height="5.0" rx="1"><title>2005-08-20: 1</title></rect>
+          
+          
+          <rect class="" x="12" y="17.0" width="4" height="5.0" rx="1"><title>2005-08-21: 1</title></rect>
+          
+          
+          <rect class="" x="18" y="7.0" width="4" height="15.0" rx="1"><title>2005-08-22: 3</title></rect>
+          
+          
+          <rect class="" x="24" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-23: 4</title></rect>
+          
+          
+          <rect class="" x="30" y="17.0" width="4" height="5.0" rx="1"><title>2005-08-24: 1</title></rect>
+          
+          
+          <rect class="" x="36" y="17.0" width="4" height="5.0" rx="1"><title>2005-08-25: 1</title></rect>
+          
+          
+          <rect class="" x="42" y="17.0" width="4" height="5.0" rx="1"><title>2005-08-26: 1</title></rect>
+          
+          
+          <rect class="" x="48" y="7.0" width="4" height="15.0" rx="1"><title>2005-08-27: 3</title></rect>
+          
+          
+          <rect class="zero" x="54" y="20" width="4" height="2" rx="1"><title>2005-08-28: 0</title></rect>
+          
+          
+          <rect class="" x="60" y="12.0" width="4" height="10.0" rx="1"><title>2005-08-29: 2</title></rect>
+          
+          
+          <rect class="" x="66" y="17.0" width="4" height="5.0" rx="1"><title>2005-08-30: 1</title></rect>
+          
+          
+          <rect class="" x="72" y="17.0" width="4" height="5.0" rx="1"><title>2005-08-31: 1</title></rect>
+          
+          
+          <rect class="" x="78" y="17.0" width="4" height="5.0" rx="1"><title>2005-09-01: 1</title></rect>
+          
+        </svg>14d
+      </span>
+    </div>
+    <p class="summary">Likely cause: kernel-level exception, usually a faulty node or a bad application memory access. Seen 1 times today on 1 node(s) (component KERNEL, level FATAL); classifier says BENIGN. <span class="src">[rules]</span></p>
+    <details>
+      <summary>Templates and sample lines</summary>
+      <pre>tlb error &lt;NUM&gt;
+</pre>
+      <pre>tlb error.........................0
+</pre>
+    </details>
+  </article>
+  
+  <article class="sig">
+    <div class="sig-head">
+      <span class="id">SIG-0007</span>
+      <span class="badge b-noise">Benign noise</span>
+      <span class="meta">1 lines · 1 nodes · KERNEL/FATAL ·
+        BENIGN (0% alerts) · first seen 2005-06-05</span>
+      <span class="spark" title="Occurrences over the last 14 days">
+        <svg width="84" height="22" viewBox="0 0 84 22" role="img" aria-label="Daily counts, last 14 days: 1, 1, 1, 3, 0, 1, 1, 1, 3, 0, 2, 1, 1, 1">
+          
+          
+          
+          <rect class="" x="0" y="15.3" width="4" height="6.7" rx="1"><title>2005-08-19: 1</title></rect>
+          
+          
+          <rect class="" x="6" y="15.3" width="4" height="6.7" rx="1"><title>2005-08-20: 1</title></rect>
+          
+          
+          <rect class="" x="12" y="15.3" width="4" height="6.7" rx="1"><title>2005-08-21: 1</title></rect>
+          
+          
+          <rect class="" x="18" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-22: 3</title></rect>
+          
+          
+          <rect class="zero" x="24" y="20" width="4" height="2" rx="1"><title>2005-08-23: 0</title></rect>
+          
+          
+          <rect class="" x="30" y="15.3" width="4" height="6.7" rx="1"><title>2005-08-24: 1</title></rect>
+          
+          
+          <rect class="" x="36" y="15.3" width="4" height="6.7" rx="1"><title>2005-08-25: 1</title></rect>
+          
+          
+          <rect class="" x="42" y="15.3" width="4" height="6.7" rx="1"><title>2005-08-26: 1</title></rect>
+          
+          
+          <rect class="" x="48" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-27: 3</title></rect>
+          
+          
+          <rect class="zero" x="54" y="20" width="4" height="2" rx="1"><title>2005-08-28: 0</title></rect>
+          
+          
+          <rect class="" x="60" y="8.7" width="4" height="13.3" rx="1"><title>2005-08-29: 2</title></rect>
+          
+          
+          <rect class="" x="66" y="15.3" width="4" height="6.7" rx="1"><title>2005-08-30: 1</title></rect>
+          
+          
+          <rect class="" x="72" y="15.3" width="4" height="6.7" rx="1"><title>2005-08-31: 1</title></rect>
+          
+          
+          <rect class="" x="78" y="15.3" width="4" height="6.7" rx="1"><title>2005-09-01: 1</title></rect>
+          
+        </svg>14d
+      </span>
+    </div>
+    <p class="summary">Likely cause: kernel-level exception, usually a faulty node or a bad application memory access. Seen 1 times today on 1 node(s) (component KERNEL, level FATAL); classifier says BENIGN. <span class="src">[rules]</span></p>
+    <details>
+      <summary>Templates and sample lines</summary>
+      <pre>machine check status register: &lt;HEX&gt;
+</pre>
+      <pre>machine check status register: 0x82000000
+</pre>
+    </details>
+  </article>
+  
+  <article class="sig">
+    <div class="sig-head">
+      <span class="id">SIG-0008</span>
+      <span class="badge b-noise">Benign noise</span>
+      <span class="meta">1 lines · 1 nodes · KERNEL/FATAL ·
+        BENIGN (0% alerts) · first seen 2005-06-05</span>
+      <span class="spark" title="Occurrences over the last 14 days">
+        <svg width="84" height="22" viewBox="0 0 84 22" role="img" aria-label="Daily counts, last 14 days: 1, 1, 1, 3, 0, 1, 1, 1, 3, 0, 2, 1, 1, 1">
+          
+          
+          
+          <rect class="" x="0" y="15.3" width="4" height="6.7" rx="1"><title>2005-08-19: 1</title></rect>
+          
+          
+          <rect class="" x="6" y="15.3" width="4" height="6.7" rx="1"><title>2005-08-20: 1</title></rect>
+          
+          
+          <rect class="" x="12" y="15.3" width="4" height="6.7" rx="1"><title>2005-08-21: 1</title></rect>
+          
+          
+          <rect class="" x="18" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-22: 3</title></rect>
+          
+          
+          <rect class="zero" x="24" y="20" width="4" height="2" rx="1"><title>2005-08-23: 0</title></rect>
+          
+          
+          <rect class="" x="30" y="15.3" width="4" height="6.7" rx="1"><title>2005-08-24: 1</title></rect>
+          
+          
+          <rect class="" x="36" y="15.3" width="4" height="6.7" rx="1"><title>2005-08-25: 1</title></rect>
+          
+          
+          <rect class="" x="42" y="15.3" width="4" height="6.7" rx="1"><title>2005-08-26: 1</title></rect>
+          
+          
+          <rect class="" x="48" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-27: 3</title></rect>
+          
+          
+          <rect class="zero" x="54" y="20" width="4" height="2" rx="1"><title>2005-08-28: 0</title></rect>
+          
+          
+          <rect class="" x="60" y="8.7" width="4" height="13.3" rx="1"><title>2005-08-29: 2</title></rect>
+          
+          
+          <rect class="" x="66" y="15.3" width="4" height="6.7" rx="1"><title>2005-08-30: 1</title></rect>
+          
+          
+          <rect class="" x="72" y="15.3" width="4" height="6.7" rx="1"><title>2005-08-31: 1</title></rect>
+          
+          
+          <rect class="" x="78" y="15.3" width="4" height="6.7" rx="1"><title>2005-09-01: 1</title></rect>
+          
+        </svg>14d
+      </span>
+    </div>
+    <p class="summary">Likely cause: unrecognised failure pattern; needs manual review. Seen 1 times today on 1 node(s) (component KERNEL, level FATAL); classifier says BENIGN. <span class="src">[rules]</span></p>
+    <details>
+      <summary>Templates and sample lines</summary>
+      <pre>summary &lt;NUM&gt;
+</pre>
+      <pre>summary...........................1
+</pre>
+    </details>
+  </article>
+  
+  <article class="sig">
+    <div class="sig-head">
+      <span class="id">SIG-0011</span>
+      <span class="badge b-noise">Benign noise</span>
+      <span class="meta">1 lines · 1 nodes · KERNEL/FATAL ·
+        BENIGN (0% alerts) · first seen 2005-06-05</span>
+      <span class="spark" title="Occurrences over the last 14 days">
+        <svg width="84" height="22" viewBox="0 0 84 22" role="img" aria-label="Daily counts, last 14 days: 1, 1, 1, 3, 0, 1, 1, 1, 2, 0, 2, 1, 1, 1">
+          
+          
+          
+          <rect class="" x="0" y="15.3" width="4" height="6.7" rx="1"><title>2005-08-19: 1</title></rect>
+          
+          
+          <rect class="" x="6" y="15.3" width="4" height="6.7" rx="1"><title>2005-08-20: 1</title></rect>
+          
+          
+          <rect class="" x="12" y="15.3" width="4" height="6.7" rx="1"><title>2005-08-21: 1</title></rect>
+          
+          
+          <rect class="" x="18" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-22: 3</title></rect>
+          
+          
+          <rect class="zero" x="24" y="20" width="4" height="2" rx="1"><title>2005-08-23: 0</title></rect>
+          
+          
+          <rect class="" x="30" y="15.3" width="4" height="6.7" rx="1"><title>2005-08-24: 1</title></rect>
+          
+          
+          <rect class="" x="36" y="15.3" width="4" height="6.7" rx="1"><title>2005-08-25: 1</title></rect>
+          
+          
+          <rect class="" x="42" y="15.3" width="4" height="6.7" rx="1"><title>2005-08-26: 1</title></rect>
+          
+          
+          <rect class="" x="48" y="8.7" width="4" height="13.3" rx="1"><title>2005-08-27: 2</title></rect>
+          
+          
+          <rect class="zero" x="54" y="20" width="4" height="2" rx="1"><title>2005-08-28: 0</title></rect>
+          
+          
+          <rect class="" x="60" y="8.7" width="4" height="13.3" rx="1"><title>2005-08-29: 2</title></rect>
+          
+          
+          <rect class="" x="66" y="15.3" width="4" height="6.7" rx="1"><title>2005-08-30: 1</title></rect>
+          
+          
+          <rect class="" x="72" y="15.3" width="4" height="6.7" rx="1"><title>2005-08-31: 1</title></rect>
+          
+          
+          <rect class="" x="78" y="15.3" width="4" height="6.7" rx="1"><title>2005-09-01: 1</title></rect>
+          
+        </svg>14d
+      </span>
+    </div>
+    <p class="summary">Likely cause: kernel-level exception, usually a faulty node or a bad application memory access. Seen 1 times today on 1 node(s) (component KERNEL, level FATAL); classifier says BENIGN. <span class="src">[rules]</span></p>
+    <details>
+      <summary>Templates and sample lines</summary>
+      <pre>imprecise machine check &lt;NUM&gt;
+</pre>
+      <pre>imprecise machine check...........0
+</pre>
+    </details>
+  </article>
+  
+  <article class="sig">
+    <div class="sig-head">
+      <span class="id">SIG-0012</span>
+      <span class="badge b-noise">Benign noise</span>
+      <span class="meta">1 lines · 1 nodes · KERNEL/FATAL ·
+        BENIGN (0% alerts) · first seen 2005-06-05</span>
+      <span class="spark" title="Occurrences over the last 14 days">
+        <svg width="84" height="22" viewBox="0 0 84 22" role="img" aria-label="Daily counts, last 14 days: 0, 1, 1, 3, 4, 1, 1, 1, 2, 0, 2, 1, 1, 1">
+          
+          
+          
+          <rect class="zero" x="0" y="20" width="4" height="2" rx="1"><title>2005-08-19: 0</title></rect>
+          
+          
+          <rect class="" x="6" y="17.0" width="4" height="5.0" rx="1"><title>2005-08-20: 1</title></rect>
+          
+          
+          <rect class="" x="12" y="17.0" width="4" height="5.0" rx="1"><title>2005-08-21: 1</title></rect>
+          
+          
+          <rect class="" x="18" y="7.0" width="4" height="15.0" rx="1"><title>2005-08-22: 3</title></rect>
+          
+          
+          <rect class="" x="24" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-23: 4</title></rect>
+          
+          
+          <rect class="" x="30" y="17.0" width="4" height="5.0" rx="1"><title>2005-08-24: 1</title></rect>
+          
+          
+          <rect class="" x="36" y="17.0" width="4" height="5.0" rx="1"><title>2005-08-25: 1</title></rect>
+          
+          
+          <rect class="" x="42" y="17.0" width="4" height="5.0" rx="1"><title>2005-08-26: 1</title></rect>
+          
+          
+          <rect class="" x="48" y="12.0" width="4" height="10.0" rx="1"><title>2005-08-27: 2</title></rect>
+          
+          
+          <rect class="zero" x="54" y="20" width="4" height="2" rx="1"><title>2005-08-28: 0</title></rect>
+          
+          
+          <rect class="" x="60" y="12.0" width="4" height="10.0" rx="1"><title>2005-08-29: 2</title></rect>
+          
+          
+          <rect class="" x="66" y="17.0" width="4" height="5.0" rx="1"><title>2005-08-30: 1</title></rect>
+          
+          
+          <rect class="" x="72" y="17.0" width="4" height="5.0" rx="1"><title>2005-08-31: 1</title></rect>
+          
+          
+          <rect class="" x="78" y="17.0" width="4" height="5.0" rx="1"><title>2005-09-01: 1</title></rect>
+          
+        </svg>14d
+      </span>
+    </div>
+    <p class="summary">Likely cause: unrecognised failure pattern; needs manual review. Seen 1 times today on 1 node(s) (component KERNEL, level FATAL); classifier says BENIGN. <span class="src">[rules]</span></p>
+    <details>
+      <summary>Templates and sample lines</summary>
+      <pre>machine state register: &lt;HEX&gt;
+</pre>
+      <pre>machine state register: 0x0002f900
+</pre>
+    </details>
+  </article>
+  
+  <article class="sig">
+    <div class="sig-head">
+      <span class="id">SIG-0013</span>
+      <span class="badge b-noise">Benign noise</span>
+      <span class="meta">1 lines · 1 nodes · KERNEL/FATAL ·
+        BENIGN (0% alerts) · first seen 2005-06-05</span>
+      <span class="spark" title="Occurrences over the last 14 days">
+        <svg width="84" height="22" viewBox="0 0 84 22" role="img" aria-label="Daily counts, last 14 days: 0, 1, 1, 2, 4, 1, 1, 1, 2, 0, 1, 1, 1, 1">
+          
+          
+          
+          <rect class="zero" x="0" y="20" width="4" height="2" rx="1"><title>2005-08-19: 0</title></rect>
+          
+          
+          <rect class="" x="6" y="17.0" width="4" height="5.0" rx="1"><title>2005-08-20: 1</title></rect>
+          
+          
+          <rect class="" x="12" y="17.0" width="4" height="5.0" rx="1"><title>2005-08-21: 1</title></rect>
+          
+          
+          <rect class="" x="18" y="12.0" width="4" height="10.0" rx="1"><title>2005-08-22: 2</title></rect>
+          
+          
+          <rect class="" x="24" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-23: 4</title></rect>
+          
+          
+          <rect class="" x="30" y="17.0" width="4" height="5.0" rx="1"><title>2005-08-24: 1</title></rect>
+          
+          
+          <rect class="" x="36" y="17.0" width="4" height="5.0" rx="1"><title>2005-08-25: 1</title></rect>
+          
+          
+          <rect class="" x="42" y="17.0" width="4" height="5.0" rx="1"><title>2005-08-26: 1</title></rect>
+          
+          
+          <rect class="" x="48" y="12.0" width="4" height="10.0" rx="1"><title>2005-08-27: 2</title></rect>
+          
+          
+          <rect class="zero" x="54" y="20" width="4" height="2" rx="1"><title>2005-08-28: 0</title></rect>
+          
+          
+          <rect class="" x="60" y="17.0" width="4" height="5.0" rx="1"><title>2005-08-29: 1</title></rect>
+          
+          
+          <rect class="" x="66" y="17.0" width="4" height="5.0" rx="1"><title>2005-08-30: 1</title></rect>
+          
+          
+          <rect class="" x="72" y="17.0" width="4" height="5.0" rx="1"><title>2005-08-31: 1</title></rect>
+          
+          
+          <rect class="" x="78" y="17.0" width="4" height="5.0" rx="1"><title>2005-09-01: 1</title></rect>
+          
+        </svg>14d
+      </span>
+    </div>
+    <p class="summary">Likely cause: unrecognised failure pattern; needs manual review. Seen 1 times today on 1 node(s) (component KERNEL, level FATAL); classifier says BENIGN. <span class="src">[rules]</span></p>
+    <details>
+      <summary>Templates and sample lines</summary>
+      <pre>wait state enable &lt;NUM&gt;
+</pre>
+      <pre>wait state enable.................0
+</pre>
+    </details>
+  </article>
+  
+  <article class="sig">
+    <div class="sig-head">
+      <span class="id">SIG-0015</span>
+      <span class="badge b-noise">Benign noise</span>
+      <span class="meta">1 lines · 1 nodes · KERNEL/FATAL ·
+        BENIGN (0% alerts) · first seen 2005-06-05</span>
+      <span class="spark" title="Occurrences over the last 14 days">
+        <svg width="84" height="22" viewBox="0 0 84 22" role="img" aria-label="Daily counts, last 14 days: 0, 1, 1, 2, 2, 1, 1, 1, 2, 0, 0, 1, 1, 1">
+          
+          
+          
+          <rect class="zero" x="0" y="20" width="4" height="2" rx="1"><title>2005-08-19: 0</title></rect>
+          
+          
+          <rect class="" x="6" y="12.0" width="4" height="10.0" rx="1"><title>2005-08-20: 1</title></rect>
+          
+          
+          <rect class="" x="12" y="12.0" width="4" height="10.0" rx="1"><title>2005-08-21: 1</title></rect>
+          
+          
+          <rect class="" x="18" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-22: 2</title></rect>
+          
+          
+          <rect class="" x="24" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-23: 2</title></rect>
+          
+          
+          <rect class="" x="30" y="12.0" width="4" height="10.0" rx="1"><title>2005-08-24: 1</title></rect>
+          
+          
+          <rect class="" x="36" y="12.0" width="4" height="10.0" rx="1"><title>2005-08-25: 1</title></rect>
+          
+          
+          <rect class="" x="42" y="12.0" width="4" height="10.0" rx="1"><title>2005-08-26: 1</title></rect>
+          
+          
+          <rect class="" x="48" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-27: 2</title></rect>
+          
+          
+          <rect class="zero" x="54" y="20" width="4" height="2" rx="1"><title>2005-08-28: 0</title></rect>
+          
+          
+          <rect class="zero" x="60" y="20" width="4" height="2" rx="1"><title>2005-08-29: 0</title></rect>
+          
+          
+          <rect class="" x="66" y="12.0" width="4" height="10.0" rx="1"><title>2005-08-30: 1</title></rect>
+          
+          
+          <rect class="" x="72" y="12.0" width="4" height="10.0" rx="1"><title>2005-08-31: 1</title></rect>
+          
+          
+          <rect class="" x="78" y="12.0" width="4" height="10.0" rx="1"><title>2005-09-01: 1</title></rect>
+          
+        </svg>14d
+      </span>
+    </div>
+    <p class="summary">Likely cause: unrecognised failure pattern; needs manual review. Seen 1 times today on 1 node(s) (component KERNEL, level FATAL); classifier says BENIGN. <span class="src">[rules]</span></p>
+    <details>
+      <summary>Templates and sample lines</summary>
+      <pre>problem state (&lt;NUM&gt; sup &lt;NUM&gt; usr) &lt;NUM&gt;
+</pre>
+      <pre>problem state (0=sup,1=usr).......1
+</pre>
+    </details>
+  </article>
+  
+  <article class="sig">
+    <div class="sig-head">
+      <span class="id">SIG-0016</span>
+      <span class="badge b-noise">Benign noise</span>
+      <span class="meta">1 lines · 1 nodes · KERNEL/FATAL ·
+        BENIGN (0% alerts) · first seen 2005-06-05</span>
+      <span class="spark" title="Occurrences over the last 14 days">
+        <svg width="84" height="22" viewBox="0 0 84 22" role="img" aria-label="Daily counts, last 14 days: 0, 1, 1, 2, 2, 1, 0, 1, 2, 0, 0, 1, 1, 1">
+          
+          
+          
+          <rect class="zero" x="0" y="20" width="4" height="2" rx="1"><title>2005-08-19: 0</title></rect>
+          
+          
+          <rect class="" x="6" y="12.0" width="4" height="10.0" rx="1"><title>2005-08-20: 1</title></rect>
+          
+          
+          <rect class="" x="12" y="12.0" width="4" height="10.0" rx="1"><title>2005-08-21: 1</title></rect>
+          
+          
+          <rect class="" x="18" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-22: 2</title></rect>
+          
+          
+          <rect class="" x="24" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-23: 2</title></rect>
+          
+          
+          <rect class="" x="30" y="12.0" width="4" height="10.0" rx="1"><title>2005-08-24: 1</title></rect>
+          
+          
+          <rect class="zero" x="36" y="20" width="4" height="2" rx="1"><title>2005-08-25: 0</title></rect>
+          
+          
+          <rect class="" x="42" y="12.0" width="4" height="10.0" rx="1"><title>2005-08-26: 1</title></rect>
+          
+          
+          <rect class="" x="48" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-27: 2</title></rect>
+          
+          
+          <rect class="zero" x="54" y="20" width="4" height="2" rx="1"><title>2005-08-28: 0</title></rect>
+          
+          
+          <rect class="zero" x="60" y="20" width="4" height="2" rx="1"><title>2005-08-29: 0</title></rect>
+          
+          
+          <rect class="" x="66" y="12.0" width="4" height="10.0" rx="1"><title>2005-08-30: 1</title></rect>
+          
+          
+          <rect class="" x="72" y="12.0" width="4" height="10.0" rx="1"><title>2005-08-31: 1</title></rect>
+          
+          
+          <rect class="" x="78" y="12.0" width="4" height="10.0" rx="1"><title>2005-09-01: 1</title></rect>
+          
+        </svg>14d
+      </span>
+    </div>
+    <p class="summary">Likely cause: unrecognised failure pattern; needs manual review. Seen 1 times today on 1 node(s) (component KERNEL, level FATAL); classifier says BENIGN. <span class="src">[rules]</span></p>
+    <details>
+      <summary>Templates and sample lines</summary>
+      <pre>floating point instr. enabled &lt;NUM&gt;
+</pre>
+      <pre>floating point instr. enabled.....1
+</pre>
+    </details>
+  </article>
+  
+  <article class="sig">
+    <div class="sig-head">
+      <span class="id">SIG-0017</span>
+      <span class="badge b-noise">Benign noise</span>
+      <span class="meta">1 lines · 1 nodes · KERNEL/FATAL ·
+        BENIGN (0% alerts) · first seen 2005-06-05</span>
+      <span class="spark" title="Occurrences over the last 14 days">
+        <svg width="84" height="22" viewBox="0 0 84 22" role="img" aria-label="Daily counts, last 14 days: 0, 1, 1, 2, 2, 1, 0, 1, 1, 0, 0, 1, 1, 1">
+          
+          
+          
+          <rect class="zero" x="0" y="20" width="4" height="2" rx="1"><title>2005-08-19: 0</title></rect>
+          
+          
+          <rect class="" x="6" y="12.0" width="4" height="10.0" rx="1"><title>2005-08-20: 1</title></rect>
+          
+          
+          <rect class="" x="12" y="12.0" width="4" height="10.0" rx="1"><title>2005-08-21: 1</title></rect>
+          
+          
+          <rect class="" x="18" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-22: 2</title></rect>
+          
+          
+          <rect class="" x="24" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-23: 2</title></rect>
+          
+          
+          <rect class="" x="30" y="12.0" width="4" height="10.0" rx="1"><title>2005-08-24: 1</title></rect>
+          
+          
+          <rect class="zero" x="36" y="20" width="4" height="2" rx="1"><title>2005-08-25: 0</title></rect>
+          
+          
+          <rect class="" x="42" y="12.0" width="4" height="10.0" rx="1"><title>2005-08-26: 1</title></rect>
+          
+          
+          <rect class="" x="48" y="12.0" width="4" height="10.0" rx="1"><title>2005-08-27: 1</title></rect>
+          
+          
+          <rect class="zero" x="54" y="20" width="4" height="2" rx="1"><title>2005-08-28: 0</title></rect>
+          
+          
+          <rect class="zero" x="60" y="20" width="4" height="2" rx="1"><title>2005-08-29: 0</title></rect>
+          
+          
+          <rect class="" x="66" y="12.0" width="4" height="10.0" rx="1"><title>2005-08-30: 1</title></rect>
+          
+          
+          <rect class="" x="72" y="12.0" width="4" height="10.0" rx="1"><title>2005-08-31: 1</title></rect>
+          
+          
+          <rect class="" x="78" y="12.0" width="4" height="10.0" rx="1"><title>2005-09-01: 1</title></rect>
+          
+        </svg>14d
+      </span>
+    </div>
+    <p class="summary">Likely cause: unrecognised failure pattern; needs manual review. Seen 1 times today on 1 node(s) (component KERNEL, level FATAL); classifier says BENIGN. <span class="src">[rules]</span></p>
+    <details>
+      <summary>Templates and sample lines</summary>
+      <pre>machine &lt;*&gt; &lt;*&gt; &lt;NUM&gt;
+</pre>
+      <pre>machine check enable..............1
+</pre>
+    </details>
+  </article>
+  
+  <article class="sig">
+    <div class="sig-head">
+      <span class="id">SIG-0020</span>
+      <span class="badge b-noise">Benign noise</span>
+      <span class="meta">1 lines · 1 nodes · KERNEL/FATAL ·
+        BENIGN (0% alerts) · first seen 2005-06-05</span>
+      <span class="spark" title="Occurrences over the last 14 days">
+        <svg width="84" height="22" viewBox="0 0 84 22" role="img" aria-label="Daily counts, last 14 days: 0, 1, 1, 0, 5, 1, 0, 1, 1, 0, 0, 1, 1, 1">
+          
+          
+          
+          <rect class="zero" x="0" y="20" width="4" height="2" rx="1"><title>2005-08-19: 0</title></rect>
+          
+          
+          <rect class="" x="6" y="18.0" width="4" height="4.0" rx="1"><title>2005-08-20: 1</title></rect>
+          
+          
+          <rect class="" x="12" y="18.0" width="4" height="4.0" rx="1"><title>2005-08-21: 1</title></rect>
+          
+          
+          <rect class="zero" x="18" y="20" width="4" height="2" rx="1"><title>2005-08-22: 0</title></rect>
+          
+          
+          <rect class="" x="24" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-23: 5</title></rect>
+          
+          
+          <rect class="" x="30" y="18.0" width="4" height="4.0" rx="1"><title>2005-08-24: 1</title></rect>
+          
+          
+          <rect class="zero" x="36" y="20" width="4" height="2" rx="1"><title>2005-08-25: 0</title></rect>
+          
+          
+          <rect class="" x="42" y="18.0" width="4" height="4.0" rx="1"><title>2005-08-26: 1</title></rect>
+          
+          
+          <rect class="" x="48" y="18.0" width="4" height="4.0" rx="1"><title>2005-08-27: 1</title></rect>
+          
+          
+          <rect class="zero" x="54" y="20" width="4" height="2" rx="1"><title>2005-08-28: 0</title></rect>
+          
+          
+          <rect class="zero" x="60" y="20" width="4" height="2" rx="1"><title>2005-08-29: 0</title></rect>
+          
+          
+          <rect class="" x="66" y="18.0" width="4" height="4.0" rx="1"><title>2005-08-30: 1</title></rect>
+          
+          
+          <rect class="" x="72" y="18.0" width="4" height="4.0" rx="1"><title>2005-08-31: 1</title></rect>
+          
+          
+          <rect class="" x="78" y="18.0" width="4" height="4.0" rx="1"><title>2005-09-01: 1</title></rect>
+          
+        </svg>14d
+      </span>
+    </div>
+    <p class="summary">Likely cause: memory or cache hardware fault on the node. Seen 1 times today on 1 node(s) (component KERNEL, level FATAL); classifier says BENIGN. <span class="src">[rules]</span></p>
+    <details>
+      <summary>Templates and sample lines</summary>
+      <pre>data address space &lt;NUM&gt;
+</pre>
+      <pre>data address space................0
+</pre>
+    </details>
+  </article>
+  
+  <article class="sig">
+    <div class="sig-head">
+      <span class="id">SIG-0021</span>
+      <span class="badge b-noise">Benign noise</span>
+      <span class="meta">1 lines · 1 nodes · KERNEL/FATAL ·
+        BENIGN (0% alerts) · first seen 2005-06-05</span>
+      <span class="spark" title="Occurrences over the last 14 days">
+        <svg width="84" height="22" viewBox="0 0 84 22" role="img" aria-label="Daily counts, last 14 days: 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1">
+          
+          
+          
+          <rect class="zero" x="0" y="20" width="4" height="2" rx="1"><title>2005-08-19: 0</title></rect>
+          
+          
+          <rect class="" x="6" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-20: 1</title></rect>
+          
+          
+          <rect class="" x="12" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-21: 1</title></rect>
+          
+          
+          <rect class="zero" x="18" y="20" width="4" height="2" rx="1"><title>2005-08-22: 0</title></rect>
+          
+          
+          <rect class="" x="24" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-23: 1</title></rect>
+          
+          
+          <rect class="" x="30" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-24: 1</title></rect>
+          
+          
+          <rect class="zero" x="36" y="20" width="4" height="2" rx="1"><title>2005-08-25: 0</title></rect>
+          
+          
+          <rect class="" x="42" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-26: 1</title></rect>
+          
+          
+          <rect class="zero" x="48" y="20" width="4" height="2" rx="1"><title>2005-08-27: 0</title></rect>
+          
+          
+          <rect class="zero" x="54" y="20" width="4" height="2" rx="1"><title>2005-08-28: 0</title></rect>
+          
+          
+          <rect class="zero" x="60" y="20" width="4" height="2" rx="1"><title>2005-08-29: 0</title></rect>
+          
+          
+          <rect class="" x="66" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-30: 1</title></rect>
+          
+          
+          <rect class="" x="72" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-31: 1</title></rect>
+          
+          
+          <rect class="" x="78" y="2.0" width="4" height="20.0" rx="1"><title>2005-09-01: 1</title></rect>
+          
+        </svg>14d
+      </span>
+    </div>
+    <p class="summary">Likely cause: unrecognised failure pattern; needs manual review. Seen 1 times today on 1 node(s) (component KERNEL, level FATAL); classifier says BENIGN. <span class="src">[rules]</span></p>
+    <details>
+      <summary>Templates and sample lines</summary>
+      <pre>core configuration register: &lt;HEX&gt;
+</pre>
+      <pre>core configuration register: 0x00002000
+</pre>
+    </details>
+  </article>
+  
+  <article class="sig">
+    <div class="sig-head">
+      <span class="id">SIG-0023</span>
+      <span class="badge b-noise">Benign noise</span>
+      <span class="meta">1 lines · 1 nodes · KERNEL/FATAL ·
+        BENIGN (0% alerts) · first seen 2005-06-05</span>
+      <span class="spark" title="Occurrences over the last 14 days">
+        <svg width="84" height="22" viewBox="0 0 84 22" role="img" aria-label="Daily counts, last 14 days: 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1">
+          
+          
+          
+          <rect class="zero" x="0" y="20" width="4" height="2" rx="1"><title>2005-08-19: 0</title></rect>
+          
+          
+          <rect class="" x="6" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-20: 1</title></rect>
+          
+          
+          <rect class="" x="12" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-21: 1</title></rect>
+          
+          
+          <rect class="zero" x="18" y="20" width="4" height="2" rx="1"><title>2005-08-22: 0</title></rect>
+          
+          
+          <rect class="" x="24" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-23: 1</title></rect>
+          
+          
+          <rect class="" x="30" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-24: 1</title></rect>
+          
+          
+          <rect class="zero" x="36" y="20" width="4" height="2" rx="1"><title>2005-08-25: 0</title></rect>
+          
+          
+          <rect class="" x="42" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-26: 1</title></rect>
+          
+          
+          <rect class="zero" x="48" y="20" width="4" height="2" rx="1"><title>2005-08-27: 0</title></rect>
+          
+          
+          <rect class="zero" x="54" y="20" width="4" height="2" rx="1"><title>2005-08-28: 0</title></rect>
+          
+          
+          <rect class="zero" x="60" y="20" width="4" height="2" rx="1"><title>2005-08-29: 0</title></rect>
+          
+          
+          <rect class="" x="66" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-30: 1</title></rect>
+          
+          
+          <rect class="" x="72" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-31: 1</title></rect>
+          
+          
+          <rect class="" x="78" y="2.0" width="4" height="20.0" rx="1"><title>2005-09-01: 1</title></rect>
+          
+        </svg>14d
+      </span>
+    </div>
+    <p class="summary">Likely cause: unrecognised failure pattern; needs manual review. Seen 1 times today on 1 node(s) (component KERNEL, level FATAL); classifier says BENIGN. <span class="src">[rules]</span></p>
+    <details>
+      <summary>Templates and sample lines</summary>
+      <pre>disable apu instruction broadcast &lt;NUM&gt;
+</pre>
+      <pre>disable apu instruction broadcast........0
+</pre>
+    </details>
+  </article>
+  
+  <article class="sig">
+    <div class="sig-head">
+      <span class="id">SIG-0025</span>
+      <span class="badge b-noise">Benign noise</span>
+      <span class="meta">1 lines · 1 nodes · KERNEL/FATAL ·
+        BENIGN (0% alerts) · first seen 2005-06-05</span>
+      <span class="spark" title="Occurrences over the last 14 days">
+        <svg width="84" height="22" viewBox="0 0 84 22" role="img" aria-label="Daily counts, last 14 days: 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1">
+          
+          
+          
+          <rect class="zero" x="0" y="20" width="4" height="2" rx="1"><title>2005-08-19: 0</title></rect>
+          
+          
+          <rect class="zero" x="6" y="20" width="4" height="2" rx="1"><title>2005-08-20: 0</title></rect>
+          
+          
+          <rect class="" x="12" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-21: 1</title></rect>
+          
+          
+          <rect class="zero" x="18" y="20" width="4" height="2" rx="1"><title>2005-08-22: 0</title></rect>
+          
+          
+          <rect class="zero" x="24" y="20" width="4" height="2" rx="1"><title>2005-08-23: 0</title></rect>
+          
+          
+          <rect class="" x="30" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-24: 1</title></rect>
+          
+          
+          <rect class="zero" x="36" y="20" width="4" height="2" rx="1"><title>2005-08-25: 0</title></rect>
+          
+          
+          <rect class="" x="42" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-26: 1</title></rect>
+          
+          
+          <rect class="zero" x="48" y="20" width="4" height="2" rx="1"><title>2005-08-27: 0</title></rect>
+          
+          
+          <rect class="zero" x="54" y="20" width="4" height="2" rx="1"><title>2005-08-28: 0</title></rect>
+          
+          
+          <rect class="zero" x="60" y="20" width="4" height="2" rx="1"><title>2005-08-29: 0</title></rect>
+          
+          
+          <rect class="zero" x="66" y="20" width="4" height="2" rx="1"><title>2005-08-30: 0</title></rect>
+          
+          
+          <rect class="" x="72" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-31: 1</title></rect>
+          
+          
+          <rect class="" x="78" y="2.0" width="4" height="20.0" rx="1"><title>2005-09-01: 1</title></rect>
+          
+        </svg>14d
+      </span>
+    </div>
+    <p class="summary">Likely cause: kernel-level exception, usually a faulty node or a bad application memory access. Seen 1 times today on 1 node(s) (component KERNEL, level FATAL); classifier says BENIGN. <span class="src">[rules]</span></p>
+    <details>
+      <summary>Templates and sample lines</summary>
+      <pre>force load/store alignment &lt;NUM&gt;
+</pre>
+      <pre>force load/store alignment...............0
+</pre>
+    </details>
+  </article>
+  
+  <article class="sig">
+    <div class="sig-head">
+      <span class="id">SIG-0027</span>
+      <span class="badge b-noise">Benign noise</span>
+      <span class="meta">1 lines · 1 nodes · KERNEL/FATAL ·
+        BENIGN (0% alerts) · first seen 2005-06-05</span>
+      <span class="spark" title="Occurrences over the last 14 days">
+        <svg width="84" height="22" viewBox="0 0 84 22" role="img" aria-label="Daily counts, last 14 days: 0, 0, 2, 0, 0, 2, 0, 2, 0, 0, 0, 0, 2, 1">
+          
+          
+          
+          <rect class="zero" x="0" y="20" width="4" height="2" rx="1"><title>2005-08-19: 0</title></rect>
+          
+          
+          <rect class="zero" x="6" y="20" width="4" height="2" rx="1"><title>2005-08-20: 0</title></rect>
+          
+          
+          <rect class="" x="12" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-21: 2</title></rect>
+          
+          
+          <rect class="zero" x="18" y="20" width="4" height="2" rx="1"><title>2005-08-22: 0</title></rect>
+          
+          
+          <rect class="zero" x="24" y="20" width="4" height="2" rx="1"><title>2005-08-23: 0</title></rect>
+          
+          
+          <rect class="" x="30" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-24: 2</title></rect>
+          
+          
+          <rect class="zero" x="36" y="20" width="4" height="2" rx="1"><title>2005-08-25: 0</title></rect>
+          
+          
+          <rect class="" x="42" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-26: 2</title></rect>
+          
+          
+          <rect class="zero" x="48" y="20" width="4" height="2" rx="1"><title>2005-08-27: 0</title></rect>
+          
+          
+          <rect class="zero" x="54" y="20" width="4" height="2" rx="1"><title>2005-08-28: 0</title></rect>
+          
+          
+          <rect class="zero" x="60" y="20" width="4" height="2" rx="1"><title>2005-08-29: 0</title></rect>
+          
+          
+          <rect class="zero" x="66" y="20" width="4" height="2" rx="1"><title>2005-08-30: 0</title></rect>
+          
+          
+          <rect class="" x="72" y="2.0" width="4" height="20.0" rx="1"><title>2005-08-31: 2</title></rect>
+          
+          
+          <rect class="" x="78" y="12.0" width="4" height="10.0" rx="1"><title>2005-09-01: 1</title></rect>
+          
+        </svg>14d
+      </span>
+    </div>
+    <p class="summary">Likely cause: unrecognised failure pattern; needs manual review. Seen 1 times today on 1 node(s) (component KERNEL, level FATAL); classifier says BENIGN. <span class="src">[rules]</span></p>
+    <details>
+      <summary>Templates and sample lines</summary>
+      <pre>general purpose registers:
+</pre>
+      <pre>general purpose registers:
+</pre>
+    </details>
+  </article>
+  
+  <article class="sig">
+    <div class="sig-head">
+      <span class="id">SIG-0111</span>
+      <span class="badge b-noise">Benign noise</span>
+      <span class="meta">1 lines · 1 nodes · MMCS/ERROR ·
+        BENIGN (0% alerts) · first seen 2005-07-20</span>
+      <span class="spark" title="Occurrences over the last 14 days">
+        <svg width="84" height="22" viewBox="0 0 84 22" role="img" aria-label="Daily counts, last 14 days: 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1">
+          
+          
+          
+          <rect class="zero" x="0" y="20" width="4" height="2" rx="1"><title>2005-08-19: 0</title></rect>
+          
+          
+          <rect class="zero" x="6" y="20" width="4" height="2" rx="1"><title>2005-08-20: 0</title></rect>
+          
+          
+          <rect class="zero" x="12" y="20" width="4" height="2" rx="1"><title>2005-08-21: 0</title></rect>
+          
+          
+          <rect class="zero" x="18" y="20" width="4" height="2" rx="1"><title>2005-08-22: 0</title></rect>
+          
+          
+          <rect class="zero" x="24" y="20" width="4" height="2" rx="1"><title>2005-08-23: 0</title></rect>
+          
+          
+          <rect class="zero" x="30" y="20" width="4" height="2" rx="1"><title>2005-08-24: 0</title></rect>
+          
+          
+          <rect class="zero" x="36" y="20" width="4" height="2" rx="1"><title>2005-08-25: 0</title></rect>
+          
+          
+          <rect class="zero" x="42" y="20" width="4" height="2" rx="1"><title>2005-08-26: 0</title></rect>
+          
+          
+          <rect class="zero" x="48" y="20" width="4" height="2" rx="1"><title>2005-08-27: 0</title></rect>
+          
+          
+          <rect class="zero" x="54" y="20" width="4" height="2" rx="1"><title>2005-08-28: 0</title></rect>
+          
+          
+          <rect class="zero" x="60" y="20" width="4" height="2" rx="1"><title>2005-08-29: 0</title></rect>
+          
+          
+          <rect class="zero" x="66" y="20" width="4" height="2" rx="1"><title>2005-08-30: 0</title></rect>
+          
+          
+          <rect class="zero" x="72" y="20" width="4" height="2" rx="1"><title>2005-08-31: 0</title></rect>
+          
+          
+          <rect class="" x="78" y="2.0" width="4" height="20.0" rx="1"><title>2005-09-01: 1</title></rect>
+          
+        </svg>14d
+      </span>
+    </div>
+    <p class="summary">Likely cause: unrecognised failure pattern; needs manual review. Seen 1 times today on 1 node(s) (component MMCS, level ERROR); classifier says BENIGN. <span class="src">[rules]</span></p>
+    <details>
+      <summary>Templates and sample lines</summary>
+      <pre>Ido packet timeout
+</pre>
+      <pre>Ido packet timeout
+</pre>
+    </details>
+  </article>
+  
+
+  <footer>Generated 2026-10-10 02:37 UTC in 48.4s · <a href="index.html">all reports</a></footer>
+</main>
+</body>
+</html>

@@ -1,0 +1,81 @@
+name: triage
+
+# Runs whenever new logs land in logs/incoming/ (or on a daily schedule / manually):
+# triages them, commits updated state + reports, and publishes reports to GitHub Pages.
+on:
+  push:
+    branches: [main]
+    paths: ["logs/incoming/**"]
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: triage
+  cancel-in-progress: false
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    env:
+      # Optional free LLM summaries: set repo variable USE_OLLAMA=true (installs Ollama in the runner).
+      OLLAMA_MODEL: ${{ vars.OLLAMA_MODEL || 'qwen2.5:1.5b' }}
+      TRIAGE_LLM: ${{ vars.USE_OLLAMA == 'true' && 'auto' || 'off' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          pip install torch==2.14.1 --index-url https://download.pytorch.org/whl/cpu
+          pip install -r requirements.txt
+
+      - name: Cache embedding model
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: hf-all-MiniLM-L6-v2
+
+      - name: Start Ollama (optional)
+        if: vars.USE_OLLAMA == 'true'
+        run: |
+          curl -fsSL https://ollama.com/install.sh | sh
+          ollama serve > /tmp/ollama.log 2>&1 &
+          sleep 5
+          ollama pull "$OLLAMA_MODEL"
+
+      - name: Triage incoming logs
+        env:
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          REPORT_TO: ${{ secrets.REPORT_TO }}
+        run: python -m triage process-incoming ${{ secrets.SMTP_HOST && '--email' || '' }}
+
+      - name: Commit state and reports
+        run: |
+          git config user.name "faultline-bot"
+          git config user.email "faultline-bot@users.noreply.github.com"
+          git add -A state reports logs
+          git diff --cached --quiet || git commit -m "triage: reports for $(date -u +%F)" && git push
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: triage-reports
+          path: reports/
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: reports/
+      - uses: actions/deploy-pages@v4

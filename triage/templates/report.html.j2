@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Faultline {{ run.date }}</title>
+<style>
+:root {
+  color-scheme: light;
+  --surface: #fcfcfb; --card: #ffffff; --border: #e4e3df;
+  --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #7a7974;
+  --series-1: #2a78d6; --bar-empty: #e4e3df;
+  --critical: #d03b3b; --serious: #ec835a; --warning: #fab219; --env: #2a78d6; --neutral: #9a9994;
+  --code-bg: #f3f2ef;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --surface: #1a1a19; --card: #232322; --border: #383835;
+    --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #96958d;
+    --series-1: #3987e5; --bar-empty: #383835; --env: #3987e5; --neutral: #74736d; --code-bg: #2c2c2a;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --surface: #1a1a19; --card: #232322; --border: #383835;
+  --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #96958d;
+  --series-1: #3987e5; --bar-empty: #383835; --env: #3987e5; --neutral: #74736d; --code-bg: #2c2c2a;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--surface); color: var(--text-primary);
+       font: 14px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+main { max-width: 1100px; margin: 0 auto; padding: 24px 16px 48px; }
+h1 { font-size: 22px; margin: 0 0 4px; }
+.sub { color: var(--text-secondary); margin: 0 0 20px; }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 20px; }
+.tile { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; }
+.tile .v { font-size: 26px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.tile .k { color: var(--text-secondary); font-size: 12px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+.badge { display: inline-flex; align-items: center; gap: 6px; padding: 2px 8px; border-radius: 999px;
+         border: 1px solid var(--border); background: var(--card); font-size: 12px; white-space: nowrap; }
+.badge::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--dot); }
+.b-new_bug { --dot: var(--critical); } .b-known_bug { --dot: var(--serious); } .b-flaky { --dot: var(--warning); }
+.b-environment { --dot: var(--env); } .b-noise { --dot: var(--neutral); }
+.sig { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; margin-bottom: 12px; }
+.sig-head { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; }
+.sig-head .id { font-weight: 600; }
+.meta { color: var(--text-secondary); font-size: 13px; font-variant-numeric: tabular-nums; }
+.spark { margin-left: auto; display: flex; align-items: center; gap: 6px; color: var(--text-muted); font-size: 11px; }
+.spark svg rect { fill: var(--series-1); }
+.spark svg rect.zero { fill: var(--bar-empty); }
+.summary { margin: 10px 0 8px; }
+.src { color: var(--text-muted); font-size: 11px; }
+code, pre { font-family: ui-monospace, Consolas, monospace; font-size: 12px; }
+pre { background: var(--code-bg); padding: 8px 10px; border-radius: 6px; overflow-x: auto; margin: 6px 0 0; white-space: pre-wrap; word-break: break-word; }
+details summary { cursor: pointer; color: var(--text-secondary); font-size: 13px; }
+.check { color: var(--text-secondary); font-size: 13px; margin: -8px 0 20px; }
+footer { color: var(--text-muted); font-size: 12px; margin-top: 28px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Faultline · {{ run.date }}</h1>
+  <p class="sub">{{ "{:,}".format(run.failure_lines) }} failure lines grouped into {{ run.signatures }} signatures
+    ({{ "%.0f"|format(run.failure_lines / (run.signatures or 1)) }}× fewer items to review). Summaries: {{ run.summary_backend }}.</p>
+
+  <section class="tiles" aria-label="Run totals">
+    <div class="tile"><div class="v">{{ "{:,}".format(run.failure_lines) }}</div><div class="k">Failure lines</div></div>
+    <div class="tile"><div class="v">{{ run.signatures }}</div><div class="k">Signatures</div></div>
+    <div class="tile"><div class="v">{{ run.new_signatures }}</div><div class="k">New signatures</div></div>
+    <div class="tile"><div class="v">{{ run.bucket_counts.get("known_bug", 0) + run.bucket_counts.get("flaky", 0) }}</div><div class="k">Known / flaky</div></div>
+  </section>
+
+  <div class="chips" aria-label="Signatures per bucket">
+    {% for b in ["new_bug", "known_bug", "flaky", "environment", "noise"] %}
+    <span class="badge b-{{ b }}">{{ labels[b] }}: {{ run.bucket_counts.get(b, 0) }}</span>
+    {% endfor %}
+  </div>
+  {% if run.label_check %}
+  <p class="check">Label check (BGL ground truth for this run): accuracy {{ "%.1f"|format(run.label_check.accuracy * 100) }}%,
+    macro-F1 {{ "%.2f"|format(run.label_check.macro_f1) }}, alert recall {{ "%.1f"|format(run.label_check.alert_detection.recall * 100) }}%.</p>
+  {% endif %}
+
+  {% for it in items %}
+  <article class="sig">
+    <div class="sig-head">
+      <span class="id">{{ it.id }}</span>
+      <span class="badge b-{{ it.bucket }}">{{ labels[it.bucket] }}</span>
+      <span class="meta">{{ "{:,}".format(it.count) }} lines · {{ it.nodes }} nodes · {{ it.component }}/{{ it.level }} ·
+        {{ it.category }} ({{ "%.0f"|format(it.alert_share * 100) }}% alerts) · first seen {{ it.first_seen }}</span>
+      <span class="spark" title="Occurrences over the last 14 days">
+        <svg width="84" height="22" viewBox="0 0 84 22" role="img" aria-label="Daily counts, last 14 days: {{ it.history|join(', ') }}">
+          {% set mx = (it.history|max) or 1 %}
+          {% for v in it.history %}
+          {% set h = 2 if v == 0 else [3, (v / mx * 20)|round(1)]|max %}
+          <rect class="{{ 'zero' if v == 0 }}" x="{{ loop.index0 * 6 }}" y="{{ 22 - h }}" width="4" height="{{ h }}" rx="1"><title>{{ days[loop.index0] }}: {{ "{:,}".format(v) }}</title></rect>
+          {% endfor %}
+        </svg>14d
+      </span>
+    </div>
+    <p class="summary">{{ it.summary }} <span class="src">[{{ it.summary_source }}]</span></p>
+    <details>
+      <summary>Templates and sample lines</summary>
+      <pre>{% for t in it.templates %}{{ t }}
+{% endfor %}</pre>
+      <pre>{% for s in it.samples %}{{ s }}
+{% endfor %}</pre>
+    </details>
+  </article>
+  {% endfor %}
+
+  <footer>Generated {{ generated }} in {{ run.seconds }}s · <a href="index.html">all reports</a></footer>
+</main>
+</body>
+</html>

@@ -1,0 +1,250 @@
+{
+ "run": {
+  "date": "2005-09-04",
+  "failure_lines": 3767,
+  "signatures": 6,
+  "new_signatures": 0,
+  "bucket_counts": {
+   "known_bug": 1,
+   "environment": 2,
+   "noise": 3
+  },
+  "summary_backend": "ollama:gemma3:4b",
+  "label_check": {
+   "n": 3767,
+   "accuracy": 1.0,
+   "macro_f1": 1.0,
+   "weighted_f1": 1.0,
+   "alert_detection": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0
+   }
+  },
+  "seconds": 0.2
+ },
+ "signatures": [
+  {
+   "id": "SIG-0030",
+   "count": 425,
+   "nodes": 241,
+   "component": "KERNEL",
+   "level": "FATAL",
+   "category": "KERNRTSP",
+   "alert_share": 1.0,
+   "confidence": 0.5311217024223771,
+   "templates": [
+    "rts panic! - stopping execution"
+   ],
+   "samples": [
+    "rts panic! - stopping execution"
+   ],
+   "first_seen": "2005-06-05",
+   "bucket": "known_bug",
+   "history": [
+    0,
+    0,
+    1,
+    0,
+    1,
+    0,
+    70,
+    0,
+    3,
+    2,
+    5,
+    3,
+    1,
+    425
+   ],
+   "summary": "Likely cause: A kernel panic triggered by an RTS error is causing premature process termination. This is affecting the stability of the BlueGene/L system, leading to node failures. Next step: Examine the system logs for the specific RTS error message preceding the panic to identify the problematic resource or operation.",
+   "summary_source": "ollama:gemma3:4b"
+  },
+  {
+   "id": "SIG-0122",
+   "count": 2819,
+   "nodes": 1024,
+   "component": "KERNEL",
+   "level": "FATAL",
+   "category": "KERNMNTF",
+   "alert_share": 1.0,
+   "confidence": 0.9961537408803316,
+   "templates": [
+    "Lustre mount FAILED : <*> : point <PATH>"
+   ],
+   "samples": [
+    "Lustre mount FAILED : bglio907 : point /p/gb1",
+    "Lustre mount FAILED : bglio908 : point /p/gb1",
+    "Lustre mount FAILED : bglio897 : point /p/gb1"
+   ],
+   "first_seen": "2005-08-03",
+   "bucket": "environment",
+   "history": [
+    0,
+    0,
+    0,
+    670,
+    0,
+    0,
+    0,
+    0,
+    0,
+    3081,
+    1093,
+    3344,
+    4352,
+    2819
+   ],
+   "summary": "The root cause is likely a persistent issue with Lustre mount failures, specifically targeting the `/p/gb1` directory. This is impacting numerous nodes (1024) and resulting in a high volume of FATAL kernel errors.  Next, investigate the Lustre server logs for `/p/gb1` for errors related to I/O contention or disk health.",
+   "summary_source": "ollama:gemma3:4b"
+  },
+  {
+   "id": "SIG-0094",
+   "count": 16,
+   "nodes": 1,
+   "component": "LINKCARD",
+   "level": "FATAL",
+   "category": "LINKIAP",
+   "alert_share": 1.0,
+   "confidence": 0.5024105980702259,
+   "templates": [
+    "MidplaneSwitchController::receiveTrain() iap failed: <LOC> status <HEX> <HEX>"
+   ],
+   "samples": [
+    "MidplaneSwitchController::receiveTrain() iap failed: R63-M0-L2-U21-A, status=ffbffbff ec000000"
+   ],
+   "first_seen": "2005-06-28",
+   "bucket": "environment",
+   "history": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    2,
+    0,
+    100,
+    28,
+    0,
+    16
+   ],
+   "summary": "The root cause is likely a corrupted or misaligned IAP (Interconnect Access Port) message being received by the MidplaneSwitchController, evidenced by the repeated `ffbffbff` status. This is affecting communication between the LINKCARD and the supercomputer's interconnect.  Next, capture a packet capture on node R63-M0-L2-U21-A to analyze the exact IAP message content and identify the source of the corruption.",
+   "summary_source": "ollama:gemma3:4b"
+  },
+  {
+   "id": "SIG-0080",
+   "count": 425,
+   "nodes": 241,
+   "component": "KERNEL",
+   "level": "FATAL",
+   "category": "BENIGN",
+   "alert_share": 0.0,
+   "confidence": 0.9428020056901334,
+   "templates": [
+    "external input interrupt (unit <HEX> bit <HEX>): torus sender <*> retransmission error was corrected"
+   ],
+   "samples": [
+    "external input interrupt (unit=0x02 bit=0x0e): torus sender z- retransmission error was corrected",
+    "external input interrupt (unit=0x02 bit=0x0b): torus sender y+ retransmission error was corrected",
+    "external input interrupt (unit=0x02 bit=0x0c): torus sender y- retransmission error was corrected"
+   ],
+   "first_seen": "2005-06-15",
+   "bucket": "noise",
+   "history": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    70,
+    0,
+    3,
+    1,
+    5,
+    1,
+    0,
+    425
+   ],
+   "summary": "The root cause is excessive torus sender retransmissions likely due to network congestion. This is impacting the performance of the kernel and potentially other applications utilizing the torus network.  Next, investigate network bandwidth utilization and packet loss rates on the affected nodes to pinpoint the source of the congestion.",
+   "summary_source": "ollama:gemma3:4b"
+  },
+  {
+   "id": "SIG-0070",
+   "count": 41,
+   "nodes": 17,
+   "component": "DISCOVERY",
+   "level": "SEVERE",
+   "category": "BENIGN",
+   "alert_share": 0.0,
+   "confidence": 0.9364270045331032,
+   "templates": [
+    "Can not get assembly information for node card"
+   ],
+   "samples": [
+    "Can not get assembly information for node card"
+   ],
+   "first_seen": "2005-06-08",
+   "bucket": "noise",
+   "history": [
+    0,
+    0,
+    45,
+    0,
+    0,
+    27,
+    0,
+    30,
+    15,
+    0,
+    45,
+    438,
+    0,
+    41
+   ],
+   "summary": "The Discovery service is experiencing frequent failures retrieving node assembly information, likely due to network connectivity issues between the Discovery server and the affected nodes. This impacts the ability to properly identify and manage resources on the supercomputer.  Next, investigate network latency and packet loss between the Discovery server and a representative set of nodes experiencing the failures using `ping` and `traceroute`.",
+   "summary_source": "ollama:gemma3:4b"
+  },
+  {
+   "id": "SIG-0071",
+   "count": 41,
+   "nodes": 17,
+   "component": "DISCOVERY",
+   "level": "ERROR",
+   "category": "BENIGN",
+   "alert_share": 0.0,
+   "confidence": 0.9780034038441983,
+   "templates": [
+    "Node card status: no ALERTs are active. Clock Mode is Low. Clock Select is Midplane. Phy JTAG Reset is asserted. ASIC JTAG Reset is asserted. Temperature Mask is not active. No temperature error. Temperature Limit Error Latch is clear. PGOOD IS NOT ASSERTED. PGOOD ERROR LATCH IS ACTIVE. MPGOOD IS NOT OK. MPGOOD ERROR LATCH IS ACTIVE. The <NUM> volt rail is OK. The <NUM> volt rail is OK.",
+    "Node card status: no ALERTs are active. Clock Mode is Low. Clock Select is Midplane. Phy JTAG Reset is asserted. ASIC JTAG Reset is asserted. Temperature Mask is not active. No temperature error. Temperature Limit Error Latch is clear. PGOOD IS NOT ASSERTED. PGOOD ERROR LATCH IS ACTIVE. MPGOOD is OK. MPGOOD ERROR LATCH IS ACTIVE. The <NUM> volt rail is OK. The <NUM> volt rail is OK."
+   ],
+   "samples": [
+    "Node card status: no ALERTs are active. Clock Mode is Low. Clock Select is Midplane. Phy JTAG Reset is asserted. ASIC JTAG Reset is asserted. Temperature Mask is not active. No temperature error. Temperature Limit Error Latch is clear. PGOOD IS NOT ASSERTED. PGOOD ERROR LATCH IS ACTIVE. MPGOOD IS NOT OK. MPGOOD ERROR LATCH IS ACTIVE. The 2.5 volt rail is OK. The 1.5 volt rail is OK.",
+    "Node card status: no ALERTs are active. Clock Mode is Low. Clock Select is Midplane. Phy JTAG Reset is asserted. ASIC JTAG Reset is asserted. Temperature Mask is not active. No temperature error. Temperature Limit Error Latch is clear. PGOOD IS NOT ASSERTED. PGOOD ERROR LATCH IS ACTIVE. MPGOOD is OK. MPGOOD ERROR LATCH IS ACTIVE. The 2.5 volt rail is OK. The 1.5 volt rail is OK."
+   ],
+   "first_seen": "2005-06-08",
+   "bucket": "noise",
+   "history": [
+    0,
+    0,
+    45,
+    0,
+    0,
+    27,
+    0,
+    30,
+    15,
+    0,
+    45,
+    438,
+    0,
+    41
+   ],
+   "summary": "The persistent PGOOD error latch suggests a transient power supply issue on one or more nodes. This is impacting the discovery process, leading to increased error counts.  Next, investigate the voltage rails (specifically 2.5V and 1.5V) on affected nodes using a detailed power monitoring tool to identify fluctuations.",
+   "summary_source": "ollama:gemma3:4b"
+  }
+ ]
+}

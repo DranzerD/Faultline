@@ -1,0 +1,810 @@
+{
+  "dataset": "Loghub BGL",
+  "train_period": [
+    "2005-06-03",
+    "2005-08-31"
+  ],
+  "test_period": [
+    "2005-09-01",
+    "2006-01-04"
+  ],
+  "failure_lines": {
+    "train": 691497,
+    "test": 296443
+  },
+  "templates": 191,
+  "signatures": {
+    "after_bootstrap": 130,
+    "after_test": 169
+  },
+  "classifier_test": {
+    "n": 296443,
+    "accuracy": 0.9692487257246756,
+    "macro_f1": 0.632275135006618,
+    "weighted_f1": 0.9542142827722573,
+    "alert_detection": {
+      "precision": 0.9999757125335471,
+      "recall": 0.9204158050634327,
+      "f1": 0.9585477149442414
+    },
+    "per_class": {
+      "APPCHILD": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 32.0
+      },
+      "APPOUT": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 816.0
+      },
+      "APPRES": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 2261.0
+      },
+      "APPSEV": {
+        "precision": 0.9545724194578808,
+        "recall": 1.0,
+        "f1-score": 0.9767583026907138,
+        "support": 41837.0
+      },
+      "APPTO": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 1991.0
+      },
+      "APPTORUS": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 8.0
+      },
+      "BENIGN": {
+        "precision": 0.9667438905911366,
+        "recall": 0.9999903371372802,
+        "f1-score": 0.9830861083799998,
+        "support": 206978.0
+      },
+      "KERNBIT": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 1.0
+      },
+      "KERNCON": {
+        "precision": 1.0,
+        "recall": 0.8181818181818182,
+        "f1-score": 0.9,
+        "support": 11.0
+      },
+      "KERNDTLB": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 11.0
+      },
+      "KERNEXT": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 1.0
+      },
+      "KERNFLOAT": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 3.0
+      },
+      "KERNMC": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 215.0
+      },
+      "KERNMICRO": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 17.0
+      },
+      "KERNMNTF": {
+        "precision": 0.9998198392966526,
+        "recall": 1.0,
+        "f1-score": 0.9999099115331256,
+        "support": 27748.0
+      },
+      "KERNNOETH": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 7.0
+      },
+      "KERNPAN": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 8.0
+      },
+      "KERNPOW": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 96.0
+      },
+      "KERNPROG": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 4.0
+      },
+      "KERNREC": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 6145.0
+      },
+      "KERNRTSA": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 3.0
+      },
+      "KERNRTSP": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 616.0
+      },
+      "KERNSERV": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 94.0
+      },
+      "KERNSOCK": {
+        "precision": 1.0,
+        "recall": 0.5816326530612245,
+        "f1-score": 0.7354838709677419,
+        "support": 98.0
+      },
+      "KERNSTOR": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 3.0
+      },
+      "KERNTERM": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 7238.0
+      },
+      "KERNTLBE": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 1.0
+      },
+      "LINKBLL": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 2.0
+      },
+      "LINKIAP": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 158.0
+      },
+      "LINKPAP": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 4.0
+      },
+      "MASABNORM": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 19.0
+      },
+      "MASNORM": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 1.0
+      },
+      "MMCS": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 3.0
+      },
+      "MONILL": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 1.0
+      },
+      "MONNULL": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 1.0
+      },
+      "MONPOW": {
+        "precision": 1.0,
+        "recall": 0.09090909090909091,
+        "f1-score": 0.16666666666666666,
+        "support": 11.0
+      },
+      "accuracy": 0.9692487257246756,
+      "macro avg": {
+        "precision": 0.6644760041484908,
+        "recall": 0.6247420527580393,
+        "f1-score": 0.632275135006618,
+        "support": 296443.0
+      },
+      "weighted avg": {
+        "precision": 0.9397866173275643,
+        "recall": 0.9692487257246756,
+        "f1-score": 0.9542142827722573,
+        "support": 296443.0
+      }
+    }
+  },
+  "baseline_template_lookup_test": {
+    "n": 296443,
+    "accuracy": 0.8717527484204384,
+    "macro_f1": 0.5583473487853585,
+    "weighted_f1": 0.8371551529421465,
+    "alert_detection": {
+      "precision": 0.9998445636123416,
+      "recall": 0.5751970044151344,
+      "f1": 0.7302760886378634
+    },
+    "per_class": {
+      "APPCHILD": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 32.0
+      },
+      "APPOUT": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 816.0
+      },
+      "APPRES": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 2261.0
+      },
+      "APPSEV": {
+        "precision": 0.9996731171548117,
+        "recall": 0.36548987738126537,
+        "f1-score": 0.5352773353403462,
+        "support": 41837.0
+      },
+      "APPTO": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 1991.0
+      },
+      "APPTORUS": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 8.0
+      },
+      "BENIGN": {
+        "precision": 0.844861720583733,
+        "recall": 0.9999613485491211,
+        "f1-score": 0.9158916967029758,
+        "support": 206978.0
+      },
+      "KERNBIT": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 1.0
+      },
+      "KERNCON": {
+        "precision": 1.0,
+        "recall": 0.8181818181818182,
+        "f1-score": 0.9,
+        "support": 11.0
+      },
+      "KERNDTLB": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 11.0
+      },
+      "KERNEXT": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 1.0
+      },
+      "KERNFLOAT": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 3.0
+      },
+      "KERNMC": {
+        "precision": 1.0,
+        "recall": 0.7348837209302326,
+        "f1-score": 0.8471849865951743,
+        "support": 215.0
+      },
+      "KERNMICRO": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 17.0
+      },
+      "KERNMNTF": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 27748.0
+      },
+      "KERNNOETH": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 7.0
+      },
+      "KERNPAN": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 8.0
+      },
+      "KERNPOW": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 96.0
+      },
+      "KERNPROG": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 4.0
+      },
+      "KERNREC": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 6145.0
+      },
+      "KERNRTSA": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 3.0
+      },
+      "KERNRTSP": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 616.0
+      },
+      "KERNSERV": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 94.0
+      },
+      "KERNSOCK": {
+        "precision": 1.0,
+        "recall": 0.5816326530612245,
+        "f1-score": 0.7354838709677419,
+        "support": 98.0
+      },
+      "KERNSTOR": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 3.0
+      },
+      "KERNTERM": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 7238.0
+      },
+      "KERNTLBE": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 1.0
+      },
+      "LINKBLL": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 2.0
+      },
+      "LINKIAP": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 158.0
+      },
+      "LINKPAP": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 4.0
+      },
+      "MASABNORM": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 19.0
+      },
+      "MASNORM": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 1.0
+      },
+      "MMCS": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 3.0
+      },
+      "MONILL": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 1.0
+      },
+      "MONNULL": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 1.0
+      },
+      "MONPOW": {
+        "precision": 1.0,
+        "recall": 0.09090909090909091,
+        "f1-score": 0.16666666666666666,
+        "support": 11.0
+      },
+      "micro avg": {
+        "precision": 0.8717762747313914,
+        "recall": 0.8717527484204384,
+        "f1-score": 0.8717645114171887,
+        "support": 296443.0
+      },
+      "macro avg": {
+        "precision": 0.6067926343816262,
+        "recall": 0.5441960696947987,
+        "f1-score": 0.5583473487853585,
+        "support": 296443.0
+      },
+      "weighted avg": {
+        "precision": 0.8533347503748976,
+        "recall": 0.8717527484204384,
+        "f1-score": 0.8371551529421465,
+        "support": 296443.0
+      }
+    }
+  },
+  "unseen_template_lines_test": {
+    "n": 47194,
+    "classifier": {
+      "n": 47194,
+      "accuracy": 0.8241937534432343,
+      "macro_f1": 0.21914875522088553,
+      "weighted_f1": 0.7530319450797565,
+      "alert_detection": {
+        "precision": 0.9999351091788067,
+        "recall": 0.8302532327586207,
+        "f1": 0.907228330463196
+      },
+      "per_class": {
+        "APPRES": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 2256.0
+        },
+        "APPSEV": {
+          "precision": 0.9302309282685636,
+          "recall": 1.0,
+          "f1-score": 0.963854546774867,
+          "support": 26546.0
+        },
+        "APPTO": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 1991.0
+        },
+        "BENIGN": {
+          "precision": 0.6151591034019422,
+          "recall": 0.9998014691284495,
+          "f1-score": 0.7616742919801868,
+          "support": 10074.0
+        },
+        "KERNBIT": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 1.0
+        },
+        "KERNCON": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 2.0
+        },
+        "KERNEXT": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 1.0
+        },
+        "KERNMC": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 23.0
+        },
+        "KERNREC": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 6145.0
+        },
+        "KERNRTSA": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 3.0
+        },
+        "KERNSERV": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 94.0
+        },
+        "KERNSOCK": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 41.0
+        },
+        "KERNTLBE": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 1.0
+        },
+        "LINKBLL": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 2.0
+        },
+        "MMCS": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 3.0
+        },
+        "MONILL": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 1.0
+        },
+        "MONPOW": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 10.0
+        },
+        "micro avg": {
+          "precision": 0.824281082455657,
+          "recall": 0.8241937534432343,
+          "f1-score": 0.8242374156362904,
+          "support": 47194.0
+        },
+        "macro avg": {
+          "precision": 0.2085523548041474,
+          "recall": 0.23528243936049703,
+          "f1-score": 0.21914875522088553,
+          "support": 47194.0
+        },
+        "weighted avg": {
+          "precision": 0.7028440697861689,
+          "recall": 0.8241937534432343,
+          "f1-score": 0.7530319450797565,
+          "support": 47194.0
+        }
+      }
+    },
+    "baseline": {
+      "n": 47194,
+      "accuracy": 0.2134593380514472,
+      "macro_f1": 0.020695265603622184,
+      "weighted_f1": 0.07509916084131728,
+      "alert_detection": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "per_class": {
+        "APPRES": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 2256.0
+        },
+        "APPSEV": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 26546.0
+        },
+        "APPTO": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 1991.0
+        },
+        "BENIGN": {
+          "precision": 0.2134593380514472,
+          "recall": 1.0,
+          "f1-score": 0.3518195152615771,
+          "support": 10074.0
+        },
+        "KERNBIT": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 1.0
+        },
+        "KERNCON": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 2.0
+        },
+        "KERNEXT": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 1.0
+        },
+        "KERNMC": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 23.0
+        },
+        "KERNREC": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 6145.0
+        },
+        "KERNRTSA": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 3.0
+        },
+        "KERNSERV": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 94.0
+        },
+        "KERNSOCK": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 41.0
+        },
+        "KERNTLBE": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 1.0
+        },
+        "LINKBLL": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 2.0
+        },
+        "MMCS": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 3.0
+        },
+        "MONILL": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 1.0
+        },
+        "MONPOW": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 10.0
+        },
+        "accuracy": 0.2134593380514472,
+        "macro avg": {
+          "precision": 0.01255643165008513,
+          "recall": 0.058823529411764705,
+          "f1-score": 0.020695265603622184,
+          "support": 47194.0
+        },
+        "weighted avg": {
+          "precision": 0.04556488900136202,
+          "recall": 0.2134593380514472,
+          "f1-score": 0.07509916084131728,
+          "support": 47194.0
+        }
+      }
+    }
+  },
+  "novel_class_detection_test": {
+    "novel_class_lines": 9061,
+    "novel_classes": [
+      "APPOUT",
+      "APPTO",
+      "KERNBIT",
+      "KERNEXT",
+      "KERNFLOAT",
+      "KERNREC",
+      "KERNRTSA",
+      "KERNSERV",
+      "KERNTLBE",
+      "LINKBLL",
+      "MMCS",
+      "MONILL"
+    ],
+    "recall_flagged_as_new_signature": 0.689548614943163,
+    "lines_in_new_signatures": 10795,
+    "precision_new_signature_is_novel_class": 0.5787864752200093
+  },
+  "signature_quality": {
+    "train_homogeneity": 0.932731975268538,
+    "test_homogeneity": 0.9314585817799566,
+    "train_nmi": 0.4945754540020535,
+    "line_weighted_purity_test": 0.98251940507956
+  },
+  "daily_compression_test": {
+    "days": 120,
+    "median_failure_lines_per_day": 1201.5,
+    "median_signatures_per_day": 28.5,
+    "total_failure_lines": 296443,
+    "total_signature_reviews": 3458
+  },
+  "config": {
+    "embed_backend": "sentence-transformers",
+    "cluster_distance": 0.25
+  }
+}

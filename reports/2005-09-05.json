@@ -1,0 +1,175 @@
+{
+ "run": {
+  "date": "2005-09-05",
+  "failure_lines": 1876,
+  "signatures": 4,
+  "new_signatures": 0,
+  "bucket_counts": {
+   "known_bug": 1,
+   "environment": 2,
+   "noise": 1
+  },
+  "summary_backend": "ollama:gemma3:4b",
+  "label_check": {
+   "n": 1876,
+   "accuracy": 1.0,
+   "macro_f1": 1.0,
+   "weighted_f1": 1.0,
+   "alert_detection": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0
+   }
+  },
+  "seconds": 0.1
+ },
+ "signatures": [
+  {
+   "id": "SIG-0030",
+   "count": 5,
+   "nodes": 2,
+   "component": "KERNEL",
+   "level": "FATAL",
+   "category": "KERNRTSP",
+   "alert_share": 1.0,
+   "confidence": 0.5311217024223773,
+   "templates": [
+    "rts panic! - stopping execution"
+   ],
+   "samples": [
+    "rts panic! - stopping execution"
+   ],
+   "first_seen": "2005-06-05",
+   "bucket": "known_bug",
+   "history": [
+    0,
+    1,
+    0,
+    1,
+    0,
+    70,
+    0,
+    3,
+    2,
+    5,
+    3,
+    1,
+    425,
+    5
+   ],
+   "summary": "Likely cause: A kernel panic triggered by an RTS error is causing premature process termination. This is affecting the stability of the BlueGene/L system, leading to node failures. Next step: Examine the system logs for the specific RTS error message preceding the panic to identify the problematic resource or operation.",
+   "summary_source": "ollama:gemma3:4b"
+  },
+  {
+   "id": "SIG-0122",
+   "count": 1860,
+   "nodes": 1014,
+   "component": "KERNEL",
+   "level": "FATAL",
+   "category": "KERNMNTF",
+   "alert_share": 1.0,
+   "confidence": 0.9961501174418467,
+   "templates": [
+    "Lustre mount FAILED : <*> : point <PATH>"
+   ],
+   "samples": [
+    "Lustre mount FAILED : bglio827 : point /p/gb1",
+    "Lustre mount FAILED : bglio826 : point /p/gb1",
+    "Lustre mount FAILED : bglio818 : point /p/gb1"
+   ],
+   "first_seen": "2005-08-03",
+   "bucket": "environment",
+   "history": [
+    0,
+    0,
+    670,
+    0,
+    0,
+    0,
+    0,
+    0,
+    3081,
+    1093,
+    3344,
+    4352,
+    2819,
+    1860
+   ],
+   "summary": "The root cause is likely a persistent issue with Lustre mount failures, specifically targeting the `/p/gb1` directory. This is impacting numerous nodes (1024) and resulting in a high volume of FATAL kernel errors.  Next, investigate the Lustre server logs for `/p/gb1` for errors related to I/O contention or disk health.",
+   "summary_source": "ollama:gemma3:4b"
+  },
+  {
+   "id": "SIG-0094",
+   "count": 6,
+   "nodes": 1,
+   "component": "LINKCARD",
+   "level": "FATAL",
+   "category": "LINKIAP",
+   "alert_share": 1.0,
+   "confidence": 0.5024105980702259,
+   "templates": [
+    "MidplaneSwitchController::receiveTrain() iap failed: <LOC> status <HEX> <HEX>"
+   ],
+   "samples": [
+    "MidplaneSwitchController::receiveTrain() iap failed: R63-M0-L2-U21-A, status=ffbffbff ec000000"
+   ],
+   "first_seen": "2005-06-28",
+   "bucket": "environment",
+   "history": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    2,
+    0,
+    100,
+    28,
+    0,
+    16,
+    6
+   ],
+   "summary": "The root cause is likely a corrupted or misaligned IAP (Interconnect Access Port) message being received by the MidplaneSwitchController, evidenced by the repeated `ffbffbff` status. This is affecting communication between the LINKCARD and the supercomputer's interconnect.  Next, capture a packet capture on node R63-M0-L2-U21-A to analyze the exact IAP message content and identify the source of the corruption.",
+   "summary_source": "ollama:gemma3:4b"
+  },
+  {
+   "id": "SIG-0080",
+   "count": 5,
+   "nodes": 2,
+   "component": "KERNEL",
+   "level": "FATAL",
+   "category": "BENIGN",
+   "alert_share": 0.0,
+   "confidence": 0.9427784686364479,
+   "templates": [
+    "external input interrupt (unit <HEX> bit <HEX>): torus sender <*> retransmission error was corrected"
+   ],
+   "samples": [
+    "external input interrupt (unit=0x02 bit=0x0e): torus sender z- retransmission error was corrected",
+    "external input interrupt (unit=0x02 bit=0x0d): torus sender z+ retransmission error was corrected"
+   ],
+   "first_seen": "2005-06-15",
+   "bucket": "noise",
+   "history": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    70,
+    0,
+    3,
+    1,
+    5,
+    1,
+    0,
+    425,
+    5
+   ],
+   "summary": "The root cause is excessive torus sender retransmissions likely due to network congestion. This is impacting the performance of the kernel and potentially other applications utilizing the torus network.  Next, investigate network bandwidth utilization and packet loss rates on the affected nodes to pinpoint the source of the congestion.",
+   "summary_source": "ollama:gemma3:4b"
+  }
+ ]
+}

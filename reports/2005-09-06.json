@@ -1,0 +1,248 @@
+{
+ "run": {
+  "date": "2005-09-06",
+  "failure_lines": 3731,
+  "signatures": 6,
+  "new_signatures": 0,
+  "bucket_counts": {
+   "known_bug": 1,
+   "environment": 2,
+   "noise": 3
+  },
+  "summary_backend": "ollama:gemma3:4b",
+  "label_check": {
+   "n": 3731,
+   "accuracy": 1.0,
+   "macro_f1": 1.0,
+   "weighted_f1": 1.0,
+   "alert_detection": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0
+   }
+  },
+  "seconds": 10.6
+ },
+ "signatures": [
+  {
+   "id": "SIG-0030",
+   "count": 2,
+   "nodes": 1,
+   "component": "KERNEL",
+   "level": "FATAL",
+   "category": "KERNRTSP",
+   "alert_share": 1.0,
+   "confidence": 0.5311217024223773,
+   "templates": [
+    "rts panic! - stopping execution"
+   ],
+   "samples": [
+    "rts panic! - stopping execution"
+   ],
+   "first_seen": "2005-06-05",
+   "bucket": "known_bug",
+   "history": [
+    1,
+    0,
+    1,
+    0,
+    70,
+    0,
+    3,
+    2,
+    5,
+    3,
+    1,
+    425,
+    5,
+    2
+   ],
+   "summary": "Likely cause: A kernel panic triggered by an RTS error is causing premature process termination. This is affecting the stability of the BlueGene/L system, leading to node failures. Next step: Examine the system logs for the specific RTS error message preceding the panic to identify the problematic resource or operation.",
+   "summary_source": "ollama:gemma3:4b"
+  },
+  {
+   "id": "SIG-0122",
+   "count": 3582,
+   "nodes": 1024,
+   "component": "KERNEL",
+   "level": "FATAL",
+   "category": "KERNMNTF",
+   "alert_share": 1.0,
+   "confidence": 0.9961251645596236,
+   "templates": [
+    "Lustre mount FAILED : <*> : point <PATH>"
+   ],
+   "samples": [
+    "Lustre mount FAILED : bglio831 : point /p/gb1",
+    "Lustre mount FAILED : bglio830 : point /p/gb1",
+    "Lustre mount FAILED : bglio805 : point /p/gb1"
+   ],
+   "first_seen": "2005-08-03",
+   "bucket": "environment",
+   "history": [
+    0,
+    670,
+    0,
+    0,
+    0,
+    0,
+    0,
+    3081,
+    1093,
+    3344,
+    4352,
+    2819,
+    1860,
+    3582
+   ],
+   "summary": "The root cause is likely a persistent issue with Lustre mount failures, specifically targeting the `/p/gb1` directory. This is impacting numerous nodes (1024) and resulting in a high volume of FATAL kernel errors.  Next, investigate the Lustre server logs for `/p/gb1` for errors related to I/O contention or disk health.",
+   "summary_source": "ollama:gemma3:4b"
+  },
+  {
+   "id": "SIG-0092",
+   "count": 1,
+   "nodes": 1,
+   "component": "KERNEL",
+   "level": "FATAL",
+   "category": "KERNSOCK",
+   "alert_share": 1.0,
+   "confidence": 0.5153057790143165,
+   "templates": [
+    "MailboxMonitor::serviceMailboxes() lib_ido_error: -<NUM> socket closed"
+   ],
+   "samples": [
+    "MailboxMonitor::serviceMailboxes() lib_ido_error: -1019 socket closed"
+   ],
+   "first_seen": "2005-06-28",
+   "bucket": "environment",
+   "history": [
+    11,
+    0,
+    0,
+    5,
+    0,
+    0,
+    0,
+    8,
+    1,
+    0,
+    0,
+    0,
+    0,
+    1
+   ],
+   "summary": "The root cause is a persistent socket closure within the MailboxMonitor service, likely due to a network issue or resource contention. This is impacting kernel operations, resulting in fatal errors.  Next, investigate network latency and packet loss between the MailboxMonitor and the kernel using `ping` and `traceroute`.",
+   "summary_source": "ollama:gemma3:4b"
+  },
+  {
+   "id": "SIG-0001",
+   "count": 136,
+   "nodes": 40,
+   "component": "APP",
+   "level": "FATAL",
+   "category": "BENIGN",
+   "alert_share": 0.0,
+   "confidence": 0.9779242798578585,
+   "templates": [
+    "ciod: Error loading <*> invalid or missing program image No such file or directory",
+    "ciod: Error loading <PATH>: program image too big <HEX> > <HEX>"
+   ],
+   "samples": [
+    "ciod: Error loading /home/bertsch2/src/sppm_core/run/sppm: program image too big, 1663615088 > 532152320",
+    "ciod: Error loading /home/dahn/tetshhot20050906/foobar_hello: invalid or missing program image, No such file or directory"
+   ],
+   "first_seen": "2005-06-03",
+   "bucket": "noise",
+   "history": [
+    16,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    592,
+    0,
+    0,
+    0,
+    0,
+    0,
+    136
+   ],
+   "summary": "The root cause is excessively large program images being attempted to load, exceeding the allocated size limits. This is impacting application execution on the supercomputer, resulting in FATAL errors.  Next, investigate the size limits configured for program images on the BlueGene/L system and verify the size of the images being submitted.",
+   "summary_source": "ollama:gemma3:4b"
+  },
+  {
+   "id": "SIG-0002",
+   "count": 8,
+   "nodes": 8,
+   "component": "APP",
+   "level": "FATAL",
+   "category": "BENIGN",
+   "alert_share": 0.0,
+   "confidence": 0.9473693114399625,
+   "templates": [
+    "ciod: LOGIN <*> failed: Permission denied"
+   ],
+   "samples": [
+    "ciod: LOGIN chdir(/home/spelce1/sppmopt716/run) failed: Permission denied"
+   ],
+   "first_seen": "2005-06-04",
+   "bucket": "noise",
+   "history": [
+    0,
+    64,
+    0,
+    0,
+    0,
+    0,
+    0,
+    32,
+    0,
+    4992,
+    720,
+    0,
+    0,
+    8
+   ],
+   "summary": "Likely Cause: The application is encountering permission denied errors when attempting to access the `/home/spelce1/sppmopt716/run` directory due to incorrect user permissions. This is affecting the application's ability to function correctly on the affected nodes. Next step: Verify the user account running the application has the necessary read/write permissions to this directory.",
+   "summary_source": "ollama:gemma3:4b"
+  },
+  {
+   "id": "SIG-0080",
+   "count": 2,
+   "nodes": 1,
+   "component": "KERNEL",
+   "level": "FATAL",
+   "category": "BENIGN",
+   "alert_share": 0.0,
+   "confidence": 0.9428001316540379,
+   "templates": [
+    "external input interrupt (unit <HEX> bit <HEX>): torus sender <*> retransmission error was corrected"
+   ],
+   "samples": [
+    "external input interrupt (unit=0x02 bit=0x0e): torus sender z- retransmission error was corrected"
+   ],
+   "first_seen": "2005-06-15",
+   "bucket": "noise",
+   "history": [
+    0,
+    0,
+    0,
+    0,
+    70,
+    0,
+    3,
+    1,
+    5,
+    1,
+    0,
+    425,
+    5,
+    2
+   ],
+   "summary": "The root cause is excessive torus sender retransmissions likely due to network congestion. This is impacting the performance of the kernel and potentially other applications utilizing the torus network.  Next, investigate network bandwidth utilization and packet loss rates on the affected nodes to pinpoint the source of the congestion.",
+   "summary_source": "ollama:gemma3:4b"
+  }
+ ]
+}

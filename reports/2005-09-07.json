@@ -1,0 +1,1316 @@
+{
+ "run": {
+  "date": "2005-09-07",
+  "failure_lines": 1023,
+  "signatures": 35,
+  "new_signatures": 0,
+  "bucket_counts": {
+   "known_bug": 2,
+   "environment": 1,
+   "noise": 32
+  },
+  "summary_backend": "ollama:gemma3:4b",
+  "label_check": {
+   "n": 1023,
+   "accuracy": 1.0,
+   "macro_f1": 1.0,
+   "weighted_f1": 1.0,
+   "alert_detection": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0
+   }
+  },
+  "seconds": 16.3
+ },
+ "signatures": [
+  {
+   "id": "SIG-0006",
+   "count": 2,
+   "nodes": 2,
+   "component": "KERNEL",
+   "level": "FATAL",
+   "category": "KERNMC",
+   "alert_share": 1.0,
+   "confidence": 0.8412029841608202,
+   "templates": [
+    "machine check interrupt"
+   ],
+   "samples": [
+    "machine check interrupt"
+   ],
+   "first_seen": "2005-06-05",
+   "bucket": "known_bug",
+   "history": [
+    1,
+    0,
+    3,
+    1,
+    2,
+    0,
+    1,
+    1,
+    0,
+    1,
+    0,
+    0,
+    0,
+    2
+   ],
+   "summary": "Likely Cause: A machine check interrupt is occurring due to a hardware error, specifically related to the kernel. This affects the overall system stability and performance of the BlueGene/L supercomputer. Next step: Examine the node's hardware logs for specific error codes or sensor readings preceding the interrupt.",
+   "summary_source": "ollama:gemma3:4b"
+  },
+  {
+   "id": "SIG-0030",
+   "count": 1,
+   "nodes": 1,
+   "component": "KERNEL",
+   "level": "FATAL",
+   "category": "KERNRTSP",
+   "alert_share": 1.0,
+   "confidence": 0.5311217024223773,
+   "templates": [
+    "rts panic! - stopping execution"
+   ],
+   "samples": [
+    "rts panic! - stopping execution"
+   ],
+   "first_seen": "2005-06-05",
+   "bucket": "known_bug",
+   "history": [
+    0,
+    1,
+    0,
+    70,
+    0,
+    3,
+    2,
+    5,
+    3,
+    1,
+    425,
+    5,
+    2,
+    1
+   ],
+   "summary": "Likely cause: A kernel panic triggered by an RTS error is causing premature process termination. This is affecting the stability of the BlueGene/L system, leading to node failures. Next step: Examine the system logs for the specific RTS error message preceding the panic to identify the problematic resource or operation.",
+   "summary_source": "ollama:gemma3:4b"
+  },
+  {
+   "id": "SIG-0100",
+   "count": 32,
+   "nodes": 1,
+   "component": "KERNEL",
+   "level": "FATAL",
+   "category": "KERNPOW",
+   "alert_share": 1.0,
+   "confidence": 0.5315650699887939,
+   "templates": [
+    "Power deactivated: <LOC>"
+   ],
+   "samples": [
+    "Power deactivated: R03-M0-N4",
+    "Power deactivated: R03-M0-NE",
+    "Power deactivated: R03-M0-N9"
+   ],
+   "first_seen": "2005-07-06",
+   "bucket": "environment",
+   "history": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    32
+   ],
+   "summary": "The root cause is a recurring power deactivation event, likely related to a hardware fault in the power supply unit. This is impacting a single node (R03-M0-N4) and causing fatal kernel errors.  Next, immediately check the power supply unit's voltage and current readings on R03-M0-N4 for anomalies.",
+   "summary_source": "ollama:gemma3:4b"
+  },
+  {
+   "id": "SIG-0070",
+   "count": 424,
+   "nodes": 419,
+   "component": "DISCOVERY",
+   "level": "SEVERE",
+   "category": "BENIGN",
+   "alert_share": 0.0,
+   "confidence": 0.936427004533103,
+   "templates": [
+    "Can not get assembly information for node card"
+   ],
+   "samples": [
+    "Can not get assembly information for node card"
+   ],
+   "first_seen": "2005-06-08",
+   "bucket": "noise",
+   "history": [
+    0,
+    0,
+    27,
+    0,
+    30,
+    15,
+    0,
+    45,
+    438,
+    0,
+    41,
+    0,
+    0,
+    424
+   ],
+   "summary": "The Discovery service is experiencing frequent failures retrieving node assembly information, likely due to network connectivity issues between the Discovery server and the affected nodes. This impacts the ability to properly identify and manage resources on the supercomputer.  Next, investigate network latency and packet loss between the Discovery server and a representative set of nodes experiencing the failures using `ping` and `traceroute`.",
+   "summary_source": "ollama:gemma3:4b"
+  },
+  {
+   "id": "SIG-0071",
+   "count": 424,
+   "nodes": 419,
+   "component": "DISCOVERY",
+   "level": "ERROR",
+   "category": "BENIGN",
+   "alert_share": 0.0,
+   "confidence": 0.9780171436458104,
+   "templates": [
+    "Node card status: no ALERTs are active. Clock Mode is Low. Clock Select is Midplane. Phy JTAG Reset is asserted. ASIC JTAG Reset is asserted. Temperature Mask is not active. No temperature error. Temperature Limit Error Latch is clear. PGOOD IS NOT ASSERTED. PGOOD ERROR LATCH IS ACTIVE. MPGOOD IS NOT OK. MPGOOD ERROR LATCH IS ACTIVE. The <NUM> volt rail is OK. The <NUM> volt rail is OK.",
+    "Node card status: no ALERTs are active. Clock Mode is Low. Clock Select is Midplane. Phy JTAG Reset is asserted. ASIC JTAG Reset is asserted. Temperature Mask is not active. No temperature error. Temperature Limit Error Latch is clear. PGOOD IS NOT ASSERTED. PGOOD ERROR LATCH IS ACTIVE. MPGOOD is OK. MPGOOD ERROR LATCH IS ACTIVE. The <NUM> volt rail is OK. The <NUM> volt rail is OK."
+   ],
+   "samples": [
+    "Node card status: no ALERTs are active. Clock Mode is Low. Clock Select is Midplane. Phy JTAG Reset is asserted. ASIC JTAG Reset is asserted. Temperature Mask is not active. No temperature error. Temperature Limit Error Latch is clear. PGOOD IS NOT ASSERTED. PGOOD ERROR LATCH IS ACTIVE. MPGOOD IS NOT OK. MPGOOD ERROR LATCH IS ACTIVE. The 2.5 volt rail is OK. The 1.5 volt rail is OK.",
+    "Node card status: no ALERTs are active. Clock Mode is Low. Clock Select is Midplane. Phy JTAG Reset is asserted. ASIC JTAG Reset is asserted. Temperature Mask is not active. No temperature error. Temperature Limit Error Latch is clear. PGOOD IS NOT ASSERTED. PGOOD ERROR LATCH IS ACTIVE. MPGOOD is OK. MPGOOD ERROR LATCH IS ACTIVE. The 2.5 volt rail is OK. The 1.5 volt rail is OK."
+   ],
+   "first_seen": "2005-06-08",
+   "bucket": "noise",
+   "history": [
+    0,
+    0,
+    27,
+    0,
+    30,
+    15,
+    0,
+    45,
+    438,
+    0,
+    41,
+    0,
+    0,
+    424
+   ],
+   "summary": "The persistent PGOOD error latch suggests a transient power supply issue on one or more nodes. This is impacting the discovery process, leading to increased error counts.  Next, investigate the voltage rails (specifically 2.5V and 1.5V) on affected nodes using a detailed power monitoring tool to identify fluctuations.",
+   "summary_source": "ollama:gemma3:4b"
+  },
+  {
+   "id": "SIG-0001",
+   "count": 24,
+   "nodes": 8,
+   "component": "APP",
+   "level": "FATAL",
+   "category": "BENIGN",
+   "alert_share": 0.0,
+   "confidence": 0.9789336834628374,
+   "templates": [
+    "ciod: Error loading <*> invalid or missing program image No such file or directory",
+    "ciod: Error loading <PATH>: invalid or missing program image Permission denied"
+   ],
+   "samples": [
+    "ciod: Error loading /bgl/apps/swl-prep/ibm-swl/stability/SPPM/FlopCounters/sppm_DD_mpihpm_249: invalid or missing program image, No such file or directory",
+    "ciod: Error loading /bgl/apps/swl-prep/ibm-swl/stability/SPPM/FlopCounters/sppm_DD_249_ctrs: invalid or missing program image, No such file or directory",
+    "ciod: Error loading /bgl/apps/swl-prep/ibm-swl/stability/SPPM/FlopCounters/sppm_DD_ctrs_249: invalid or missing program image, Permission denied"
+   ],
+   "first_seen": "2005-06-03",
+   "bucket": "noise",
+   "history": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    592,
+    0,
+    0,
+    0,
+    0,
+    0,
+    136,
+    24
+   ],
+   "summary": "The failures stem from the CIOD system repeatedly failing to load program images, likely due to incorrect file permissions or missing files. This impacts the execution of the SPPM stability tests, causing them to fail.  Next, verify the file permissions and existence of the `/bgl/apps/swl-prep/...` directories and associated program images.",
+   "summary_source": "ollama:gemma3:4b"
+  },
+  {
+   "id": "SIG-0082",
+   "count": 20,
+   "nodes": 1,
+   "component": "DISCOVERY",
+   "level": "SEVERE",
+   "category": "BENIGN",
+   "alert_share": 0.0,
+   "confidence": 0.9430513027615317,
+   "templates": [
+    "SerialNumber(<HEX>) IpAddress(<IP>) Status(A)"
+   ],
+   "samples": [
+    "SerialNumber(000000000000000000000000fff29f16d89a000d60e92765) IpAddress(0.0.0.0) Status(A)",
+    "SerialNumber(000000000000000000000000fff29f157ef6000d60ea8109) IpAddress(0.0.0.0) Status(A)",
+    "SerialNumber(000000000000000000000000fff29f157eff000d60ea8100) IpAddress(0.0.0.0) Status(A)"
+   ],
+   "first_seen": "2005-06-20",
+   "bucket": "noise",
+   "history": [
+    0,
+    0,
+    16,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    20
+   ],
+   "summary": "The Discovery component is experiencing excessive attempts to establish connections, likely due to a transient network issue. This is impacting the ability of nodes to register and participate in the cluster.  Next, investigate network latency and packet loss between the Discovery server and the affected nodes using ping and traceroute.",
+   "summary_source": "ollama:gemma3:4b"
+  },
+  {
+   "id": "SIG-0095",
+   "count": 16,
+   "nodes": 2,
+   "component": "HARDWARE",
+   "level": "SEVERE",
+   "category": "BENIGN",
+   "alert_share": 0.0,
+   "confidence": 0.9627222366144281,
+   "templates": [
+    "LinkCard power module U58 is not accessible"
+   ],
+   "samples": [
+    "LinkCard power module U58 is not accessible"
+   ],
+   "first_seen": "2005-07-01",
+   "bucket": "noise",
+   "history": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    16
+   ],
+   "summary": "Likely cause: A hardware fault, specifically a non-accessible LinkCard power module U58, is causing repeated failures. This is impacting the operation of two distinct nodes on the supercomputer. Next step: Immediately check the power supply and connections to LinkCard U58 for physical damage or loose connections.",
+   "summary_source": "ollama:gemma3:4b"
+  },
+  {
+   "id": "SIG-0097",
+   "count": 14,
+   "nodes": 2,
+   "component": "HARDWARE",
+   "level": "SEVERE",
+   "category": "BENIGN",
+   "alert_share": 0.0,
+   "confidence": 0.9641052454322855,
+   "templates": [
+    "LinkCard is not fully functional"
+   ],
+   "samples": [
+    "LinkCard is not fully functional"
+   ],
+   "first_seen": "2005-07-01",
+   "bucket": "noise",
+   "history": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    14
+   ],
+   "summary": "Likely cause: A persistent LinkCard malfunction is causing intermittent hardware errors. This is affecting the stability of two nodes, leading to widespread failure reports. Next step: Investigate the specific LinkCard IDs experiencing issues for detailed hardware diagnostics.",
+   "summary_source": "ollama:gemma3:4b"
+  },
+  {
+   "id": "SIG-0028",
+   "count": 8,
+   "nodes": 1,
+   "component": "KERNEL",
+   "level": "FATAL",
+   "category": "BENIGN",
+   "alert_share": 0.0,
+   "confidence": 0.9819778396012134,
+   "templates": [
+    "<NUM>:<HEX> <NUM>:<HEX> <NUM>:<HEX> <NUM>:<HEX>"
+   ],
+   "samples": [
+    "0:00000000 1:1fea9ba0 2:1eeeeeee 3:00000000",
+    "4:1feaa4f0 5:00000001 6:1feaa4ec 7:ff00ff00",
+    "8:008e4f90 9:008e6c8c 10:00000001 11:00000002"
+   ],
+   "first_seen": "2005-06-05",
+   "bucket": "noise",
+   "history": [
+    0,
+    8,
+    0,
+    0,
+    0,
+    0,
+    8,
+    5,
+    16,
+    8,
+    0,
+    0,
+    0,
+    8
+   ],
+   "summary": "The root cause is a kernel-level memory corruption likely due to a hardware fault. This is affecting the stability of a single node, causing fatal errors.  Next, run memory diagnostics on the affected node to identify potential hardware issues.",
+   "summary_source": "ollama:gemma3:4b"
+  },
+  {
+   "id": "SIG-0010",
+   "count": 6,
+   "nodes": 2,
+   "component": "KERNEL",
+   "level": "FATAL",
+   "category": "BENIGN",
+   "alert_share": 0.0,
+   "confidence": 0.9716368789891051,
+   "templates": [
+    "d-cache <*> parity error <NUM>",
+    "i-cache parity error <NUM>"
+   ],
+   "samples": [
+    "i-cache parity error..............0",
+    "d-cache search parity error.......0",
+    "d-cache flush parity error........1"
+   ],
+   "first_seen": "2005-06-05",
+   "bucket": "noise",
+   "history": [
+    3,
+    3,
+    9,
+    0,
+    6,
+    3,
+    3,
+    3,
+    6,
+    3,
+    0,
+    0,
+    0,
+    6
+   ],
+   "summary": "Likely cause: The system is experiencing frequent parity errors in the d-cache, potentially due to hardware degradation or intermittent power fluctuations. This affects data integrity and processing performance on the affected node. Next step: Run a memory diagnostic test on the node to identify potential hardware faults.",
+   "summary_source": "ollama:gemma3:4b"
+  },
+  {
+   "id": "SIG-0005",
+   "count": 5,
+   "nodes": 2,
+   "component": "KERNEL",
+   "level": "FATAL",
+   "category": "BENIGN",
+   "alert_share": 0.0,
+   "confidence": 0.9754950942898896,
+   "templates": [
+    "instruction <*> <*> <NUM>",
+    "instruction address: <HEX>"
+   ],
+   "samples": [
+    "instruction address: 0x00118734",
+    "instruction plb error.............0",
+    "instruction address: 0x00128b7c"
+   ],
+   "first_seen": "2005-06-05",
+   "bucket": "noise",
+   "history": [
+    2,
+    3,
+    7,
+    0,
+    4,
+    3,
+    3,
+    3,
+    6,
+    3,
+    0,
+    0,
+    0,
+    5
+   ],
+   "summary": "Likely cause: This FATAL kernel error, identified by instruction address 0x0010dc6c, suggests a transient hardware issue within the kernel itself. It is affecting the stability of a single node, potentially leading to unpredictable behavior. Next, we should run a memory test on the affected node to rule out faulty RAM.",
+   "summary_source": "ollama:gemma3:4b"
+  },
+  {
+   "id": "SIG-0009",
+   "count": 4,
+   "nodes": 2,
+   "component": "KERNEL",
+   "level": "FATAL",
+   "category": "BENIGN",
+   "alert_share": 0.0,
+   "confidence": 0.9579614119913338,
+   "templates": [
+    "data <*> plb error <NUM>"
+   ],
+   "samples": [
+    "data read plb error...............0",
+    "data write plb error..............0"
+   ],
+   "first_seen": "2005-06-05",
+   "bucket": "noise",
+   "history": [
+    2,
+    2,
+    6,
+    0,
+    4,
+    2,
+    2,
+    2,
+    4,
+    2,
+    0,
+    0,
+    0,
+    4
+   ],
+   "summary": "Likely cause: This recurring \"plb error\" within the kernel suggests a transient problem with the processor's parity buffer. Affected: This impacts data transfer operations, potentially leading to corrupted data. Next step: Examine the node's system logs for specific timing correlations with the PLB errors to identify potential hardware or software triggers.",
+   "summary_source": "ollama:gemma3:4b"
+  },
+  {
+   "id": "SIG-0014",
+   "count": 4,
+   "nodes": 2,
+   "component": "KERNEL",
+   "level": "FATAL",
+   "category": "BENIGN",
+   "alert_share": 0.0,
+   "confidence": 0.9552452262932926,
+   "templates": [
+    "critical input interrupt enable <NUM>",
+    "external input interrupt enable <NUM>"
+   ],
+   "samples": [
+    "critical input interrupt enable...1",
+    "external input interrupt enable...1"
+   ],
+   "first_seen": "2005-06-05",
+   "bucket": "noise",
+   "history": [
+    2,
+    2,
+    4,
+    0,
+    2,
+    2,
+    2,
+    2,
+    4,
+    2,
+    0,
+    0,
+    0,
+    4
+   ],
+   "summary": "Likely Cause: The system is experiencing frequent fatal errors related to interrupt enable signals, likely due to a transient hardware issue. This affects kernel stability and potentially processing performance on the affected nodes. Next step: Investigate the hardware logs on the impacted nodes for specific interrupt source details and timing information.",
+   "summary_source": "ollama:gemma3:4b"
+  },
+  {
+   "id": "SIG-0019",
+   "count": 4,
+   "nodes": 2,
+   "component": "KERNEL",
+   "level": "FATAL",
+   "category": "BENIGN",
+   "alert_share": 0.0,
+   "confidence": 0.9650530856182031,
+   "templates": [
+    "debug <*> enable <NUM>"
+   ],
+   "samples": [
+    "debug wait enable.................0",
+    "debug interrupt enable............0"
+   ],
+   "first_seen": "2005-06-05",
+   "bucket": "noise",
+   "history": [
+    0,
+    2,
+    2,
+    0,
+    0,
+    2,
+    2,
+    2,
+    4,
+    2,
+    0,
+    0,
+    0,
+    4
+   ],
+   "summary": "The kernel is experiencing fatal errors, likely due to a timing issue related to interrupt handling. This is impacting the stability of the node and potentially causing intermittent service disruptions.  Enable the \"debug interrupt enable\" template on the affected node to capture interrupt-related data during the error occurrence.",
+   "summary_source": "ollama:gemma3:4b"
+  },
+  {
+   "id": "SIG-0018",
+   "count": 3,
+   "nodes": 2,
+   "component": "KERNEL",
+   "level": "FATAL",
+   "category": "BENIGN",
+   "alert_share": 0.0,
+   "confidence": 0.9755332153804773,
+   "templates": [
+    "floating pt ex mode <NUM> enable <NUM>"
+   ],
+   "samples": [
+    "floating pt ex mode 0 enable......1",
+    "floating pt ex mode 1 enable......1"
+   ],
+   "first_seen": "2005-06-05",
+   "bucket": "noise",
+   "history": [
+    0,
+    2,
+    2,
+    0,
+    0,
+    2,
+    2,
+    2,
+    4,
+    2,
+    0,
+    0,
+    0,
+    3
+   ],
+   "summary": "The root cause is a persistent, low-priority floating-point execution mode setting, likely triggered by a configuration conflict. This is affecting the performance of the kernel due to incorrect floating-point calculations. Next, investigate the node configuration to identify and correct the conflicting floating-point execution mode setting.",
+   "summary_source": "ollama:gemma3:4b"
+  },
+  {
+   "id": "SIG-0004",
+   "count": 2,
+   "nodes": 2,
+   "component": "KERNEL",
+   "level": "FATAL",
+   "category": "BENIGN",
+   "alert_share": 0.0,
+   "confidence": 0.9375142712539692,
+   "templates": [
+    "tlb error <NUM>"
+   ],
+   "samples": [
+    "tlb error.........................0"
+   ],
+   "first_seen": "2005-06-05",
+   "bucket": "noise",
+   "history": [
+    1,
+    1,
+    3,
+    0,
+    2,
+    1,
+    1,
+    1,
+    2,
+    1,
+    0,
+    0,
+    0,
+    2
+   ],
+   "summary": "Likely cause: kernel-level exception, usually a faulty node or a bad application memory access. Seen 2 times today on 2 node(s) (component KERNEL, level FATAL); classifier says BENIGN.",
+   "summary_source": "rules"
+  },
+  {
+   "id": "SIG-0007",
+   "count": 2,
+   "nodes": 2,
+   "component": "KERNEL",
+   "level": "FATAL",
+   "category": "BENIGN",
+   "alert_share": 0.0,
+   "confidence": 0.8877294766043423,
+   "templates": [
+    "machine check status register: <HEX>"
+   ],
+   "samples": [
+    "machine check status register: 0x81000000"
+   ],
+   "first_seen": "2005-06-05",
+   "bucket": "noise",
+   "history": [
+    1,
+    1,
+    3,
+    0,
+    2,
+    1,
+    1,
+    1,
+    2,
+    1,
+    0,
+    0,
+    0,
+    2
+   ],
+   "summary": "Likely cause: kernel-level exception, usually a faulty node or a bad application memory access. Seen 2 times today on 2 node(s) (component KERNEL, level FATAL); classifier says BENIGN.",
+   "summary_source": "rules"
+  },
+  {
+   "id": "SIG-0008",
+   "count": 2,
+   "nodes": 2,
+   "component": "KERNEL",
+   "level": "FATAL",
+   "category": "BENIGN",
+   "alert_share": 0.0,
+   "confidence": 0.9624144392080994,
+   "templates": [
+    "summary <NUM>"
+   ],
+   "samples": [
+    "summary...........................1"
+   ],
+   "first_seen": "2005-06-05",
+   "bucket": "noise",
+   "history": [
+    1,
+    1,
+    3,
+    0,
+    2,
+    1,
+    1,
+    1,
+    2,
+    1,
+    0,
+    0,
+    0,
+    2
+   ],
+   "summary": "Likely cause: unrecognised failure pattern; needs manual review. Seen 2 times today on 2 node(s) (component KERNEL, level FATAL); classifier says BENIGN.",
+   "summary_source": "rules"
+  },
+  {
+   "id": "SIG-0011",
+   "count": 2,
+   "nodes": 2,
+   "component": "KERNEL",
+   "level": "FATAL",
+   "category": "BENIGN",
+   "alert_share": 0.0,
+   "confidence": 0.9254697303888814,
+   "templates": [
+    "imprecise machine check <NUM>"
+   ],
+   "samples": [
+    "imprecise machine check...........0"
+   ],
+   "first_seen": "2005-06-05",
+   "bucket": "noise",
+   "history": [
+    1,
+    1,
+    2,
+    0,
+    2,
+    1,
+    1,
+    1,
+    2,
+    1,
+    0,
+    0,
+    0,
+    2
+   ],
+   "summary": "Likely cause: kernel-level exception, usually a faulty node or a bad application memory access. Seen 2 times today on 2 node(s) (component KERNEL, level FATAL); classifier says BENIGN.",
+   "summary_source": "rules"
+  },
+  {
+   "id": "SIG-0012",
+   "count": 2,
+   "nodes": 2,
+   "component": "KERNEL",
+   "level": "FATAL",
+   "category": "BENIGN",
+   "alert_share": 0.0,
+   "confidence": 0.9738306947526744,
+   "templates": [
+    "machine state register: <HEX>"
+   ],
+   "samples": [
+    "machine state register: 0x0002f900"
+   ],
+   "first_seen": "2005-06-05",
+   "bucket": "noise",
+   "history": [
+    1,
+    1,
+    2,
+    0,
+    2,
+    1,
+    1,
+    1,
+    2,
+    1,
+    0,
+    0,
+    0,
+    2
+   ],
+   "summary": "Likely cause: unrecognised failure pattern; needs manual review. Seen 2 times today on 2 node(s) (component KERNEL, level FATAL); classifier says BENIGN.",
+   "summary_source": "rules"
+  },
+  {
+   "id": "SIG-0013",
+   "count": 2,
+   "nodes": 2,
+   "component": "KERNEL",
+   "level": "FATAL",
+   "category": "BENIGN",
+   "alert_share": 0.0,
+   "confidence": 0.9701838409850837,
+   "templates": [
+    "wait state enable <NUM>"
+   ],
+   "samples": [
+    "wait state enable.................0"
+   ],
+   "first_seen": "2005-06-05",
+   "bucket": "noise",
+   "history": [
+    1,
+    1,
+    2,
+    0,
+    1,
+    1,
+    1,
+    1,
+    2,
+    1,
+    0,
+    0,
+    0,
+    2
+   ],
+   "summary": "Likely cause: unrecognised failure pattern; needs manual review. Seen 2 times today on 2 node(s) (component KERNEL, level FATAL); classifier says BENIGN.",
+   "summary_source": "rules"
+  },
+  {
+   "id": "SIG-0015",
+   "count": 2,
+   "nodes": 2,
+   "component": "KERNEL",
+   "level": "FATAL",
+   "category": "BENIGN",
+   "alert_share": 0.0,
+   "confidence": 0.9685572007686603,
+   "templates": [
+    "problem state (<NUM> sup <NUM> usr) <NUM>"
+   ],
+   "samples": [
+    "problem state (0=sup,1=usr).......1"
+   ],
+   "first_seen": "2005-06-05",
+   "bucket": "noise",
+   "history": [
+    1,
+    1,
+    2,
+    0,
+    0,
+    1,
+    1,
+    1,
+    2,
+    1,
+    0,
+    0,
+    0,
+    2
+   ],
+   "summary": "Likely cause: unrecognised failure pattern; needs manual review. Seen 2 times today on 2 node(s) (component KERNEL, level FATAL); classifier says BENIGN.",
+   "summary_source": "rules"
+  },
+  {
+   "id": "SIG-0016",
+   "count": 2,
+   "nodes": 2,
+   "component": "KERNEL",
+   "level": "FATAL",
+   "category": "BENIGN",
+   "alert_share": 0.0,
+   "confidence": 0.9374908533930839,
+   "templates": [
+    "floating point instr. enabled <NUM>"
+   ],
+   "samples": [
+    "floating point instr. enabled.....1"
+   ],
+   "first_seen": "2005-06-05",
+   "bucket": "noise",
+   "history": [
+    0,
+    1,
+    2,
+    0,
+    0,
+    1,
+    1,
+    1,
+    2,
+    1,
+    0,
+    0,
+    0,
+    2
+   ],
+   "summary": "Likely cause: unrecognised failure pattern; needs manual review. Seen 2 times today on 2 node(s) (component KERNEL, level FATAL); classifier says BENIGN.",
+   "summary_source": "rules"
+  },
+  {
+   "id": "SIG-0017",
+   "count": 2,
+   "nodes": 2,
+   "component": "KERNEL",
+   "level": "FATAL",
+   "category": "BENIGN",
+   "alert_share": 0.0,
+   "confidence": 0.9372863967494475,
+   "templates": [
+    "machine <*> <*> <NUM>"
+   ],
+   "samples": [
+    "machine check enable..............1"
+   ],
+   "first_seen": "2005-06-05",
+   "bucket": "noise",
+   "history": [
+    0,
+    1,
+    1,
+    0,
+    0,
+    1,
+    1,
+    1,
+    2,
+    2,
+    0,
+    0,
+    0,
+    2
+   ],
+   "summary": "The root cause is likely a transient kernel bug related to I-fetch operations, evidenced by repeated FATAL level errors. This is impacting the performance and stability of the affected nodes.  Next, we should increase logging verbosity around the I-fetch process to capture more detailed error messages and identify the specific triggering conditions.",
+   "summary_source": "ollama:gemma3:4b"
+  },
+  {
+   "id": "SIG-0022",
+   "count": 2,
+   "nodes": 1,
+   "component": "KERNEL",
+   "level": "FATAL",
+   "category": "BENIGN",
+   "alert_share": 0.0,
+   "confidence": 0.9635732965519449,
+   "templates": [
+    "disable <*> <*> <NUM>"
+   ],
+   "samples": [
+    "disable store gathering..................0",
+    "disable trace broadcast..................0"
+   ],
+   "first_seen": "2005-06-05",
+   "bucket": "noise",
+   "history": [
+    0,
+    2,
+    0,
+    0,
+    0,
+    2,
+    3,
+    2,
+    4,
+    2,
+    0,
+    0,
+    0,
+    2
+   ],
+   "summary": "The FATAL kernel errors likely stem from a bug in the kernel's memory management under heavy load, causing excessive resource contention. This is impacting the stability of individual nodes, leading to intermittent failures.  Next, we should increase the kernel trace level to capture detailed memory allocation events during these occurrences.",
+   "summary_source": "ollama:gemma3:4b"
+  },
+  {
+   "id": "SIG-0024",
+   "count": 2,
+   "nodes": 1,
+   "component": "KERNEL",
+   "level": "FATAL",
+   "category": "BENIGN",
+   "alert_share": 0.0,
+   "confidence": 0.9454891132302956,
+   "templates": [
+    "guaranteed instruction cache block touch.<NUM>",
+    "guaranteed data cache block touch <NUM>"
+   ],
+   "samples": [
+    "guaranteed instruction cache block touch.0",
+    "guaranteed data cache block touch........1"
+   ],
+   "first_seen": "2005-06-05",
+   "bucket": "noise",
+   "history": [
+    0,
+    2,
+    0,
+    0,
+    0,
+    0,
+    2,
+    2,
+    4,
+    2,
+    0,
+    0,
+    0,
+    2
+   ],
+   "summary": "Likely cause: This benign error indicates frequent, predictable cache hits on the instruction and data caches, a normal behavior for the kernel. It affects performance by causing cache block touches. Next, monitor cache hit rates under sustained load to confirm this is expected behavior.",
+   "summary_source": "ollama:gemma3:4b"
+  },
+  {
+   "id": "SIG-0026",
+   "count": 2,
+   "nodes": 1,
+   "component": "KERNEL",
+   "level": "FATAL",
+   "category": "BENIGN",
+   "alert_share": 0.0,
+   "confidence": 0.9611307865745976,
+   "templates": [
+    "icache prefetch <*> <NUM>"
+   ],
+   "samples": [
+    "icache prefetch depth....................0",
+    "icache prefetch threshold................0"
+   ],
+   "first_seen": "2005-06-05",
+   "bucket": "noise",
+   "history": [
+    0,
+    2,
+    0,
+    0,
+    0,
+    0,
+    2,
+    2,
+    4,
+    2,
+    0,
+    0,
+    0,
+    2
+   ],
+   "summary": "Likely cause: unrecognised failure pattern; needs manual review. Seen 2 times today on 1 node(s) (component KERNEL, level FATAL); classifier says BENIGN.",
+   "summary_source": "rules"
+  },
+  {
+   "id": "SIG-0027",
+   "count": 2,
+   "nodes": 1,
+   "component": "KERNEL",
+   "level": "FATAL",
+   "category": "BENIGN",
+   "alert_share": 0.0,
+   "confidence": 0.9249895831193877,
+   "templates": [
+    "general purpose registers:",
+    "special purpose registers:"
+   ],
+   "samples": [
+    "general purpose registers:",
+    "special purpose registers:"
+   ],
+   "first_seen": "2005-06-05",
+   "bucket": "noise",
+   "history": [
+    0,
+    2,
+    0,
+    0,
+    0,
+    0,
+    2,
+    1,
+    4,
+    2,
+    0,
+    0,
+    0,
+    2
+   ],
+   "summary": "Likely cause: unrecognised failure pattern; needs manual review. Seen 2 times today on 1 node(s) (component KERNEL, level FATAL); classifier says BENIGN.",
+   "summary_source": "rules"
+  },
+  {
+   "id": "SIG-0020",
+   "count": 1,
+   "nodes": 1,
+   "component": "KERNEL",
+   "level": "FATAL",
+   "category": "BENIGN",
+   "alert_share": 0.0,
+   "confidence": 0.963537772614058,
+   "templates": [
+    "data address space <NUM>"
+   ],
+   "samples": [
+    "data address space................0"
+   ],
+   "first_seen": "2005-06-05",
+   "bucket": "noise",
+   "history": [
+    0,
+    1,
+    1,
+    0,
+    0,
+    1,
+    1,
+    1,
+    2,
+    1,
+    0,
+    0,
+    0,
+    1
+   ],
+   "summary": "Likely cause: memory or cache hardware fault on the node. Seen 1 times today on 1 node(s) (component KERNEL, level FATAL); classifier says BENIGN.",
+   "summary_source": "rules"
+  },
+  {
+   "id": "SIG-0021",
+   "count": 1,
+   "nodes": 1,
+   "component": "KERNEL",
+   "level": "FATAL",
+   "category": "BENIGN",
+   "alert_share": 0.0,
+   "confidence": 0.9453124774242205,
+   "templates": [
+    "core configuration register: <HEX>"
+   ],
+   "samples": [
+    "core configuration register: 0x00002000"
+   ],
+   "first_seen": "2005-06-05",
+   "bucket": "noise",
+   "history": [
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    1,
+    1,
+    2,
+    1,
+    0,
+    0,
+    0,
+    1
+   ],
+   "summary": "Likely cause: unrecognised failure pattern; needs manual review. Seen 1 times today on 1 node(s) (component KERNEL, level FATAL); classifier says BENIGN.",
+   "summary_source": "rules"
+  },
+  {
+   "id": "SIG-0023",
+   "count": 1,
+   "nodes": 1,
+   "component": "KERNEL",
+   "level": "FATAL",
+   "category": "BENIGN",
+   "alert_share": 0.0,
+   "confidence": 0.9681529106015226,
+   "templates": [
+    "disable apu instruction broadcast <NUM>"
+   ],
+   "samples": [
+    "disable apu instruction broadcast........0"
+   ],
+   "first_seen": "2005-06-05",
+   "bucket": "noise",
+   "history": [
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    1,
+    1,
+    2,
+    1,
+    0,
+    0,
+    0,
+    1
+   ],
+   "summary": "Likely cause: unrecognised failure pattern; needs manual review. Seen 1 times today on 1 node(s) (component KERNEL, level FATAL); classifier says BENIGN.",
+   "summary_source": "rules"
+  },
+  {
+   "id": "SIG-0025",
+   "count": 1,
+   "nodes": 1,
+   "component": "KERNEL",
+   "level": "FATAL",
+   "category": "BENIGN",
+   "alert_share": 0.0,
+   "confidence": 0.9432709503505738,
+   "templates": [
+    "force load/store alignment <NUM>"
+   ],
+   "samples": [
+    "force load/store alignment...............0"
+   ],
+   "first_seen": "2005-06-05",
+   "bucket": "noise",
+   "history": [
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    1,
+    1,
+    2,
+    1,
+    0,
+    0,
+    0,
+    1
+   ],
+   "summary": "Likely cause: kernel-level exception, usually a faulty node or a bad application memory access. Seen 1 times today on 1 node(s) (component KERNEL, level FATAL); classifier says BENIGN.",
+   "summary_source": "rules"
+  },
+  {
+   "id": "SIG-0029",
+   "count": 1,
+   "nodes": 1,
+   "component": "KERNEL",
+   "level": "FATAL",
+   "category": "BENIGN",
+   "alert_share": 0.0,
+   "confidence": 0.9397062266235787,
+   "templates": [
+    "lr:<HEX> cr:<HEX> xer:<HEX> ctr:<HEX>"
+   ],
+   "samples": [
+    "lr:001283a0 cr:80000442 xer:00000002 ctr:0000fe31"
+   ],
+   "first_seen": "2005-06-05",
+   "bucket": "noise",
+   "history": [
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    2,
+    1,
+    0,
+    0,
+    0,
+    1
+   ],
+   "summary": "Likely cause: unrecognised failure pattern; needs manual review. Seen 1 times today on 1 node(s) (component KERNEL, level FATAL); classifier says BENIGN.",
+   "summary_source": "rules"
+  },
+  {
+   "id": "SIG-0081",
+   "count": 1,
+   "nodes": 1,
+   "component": "DISCOVERY",
+   "level": "SEVERE",
+   "category": "BENIGN",
+   "alert_share": 0.0,
+   "confidence": 0.960522763541001,
+   "templates": [
+    "BglIdoChip table has <NUM> IDOs with the same IP address (<IP>)"
+   ],
+   "samples": [
+    "BglIdoChip table has 20 IDOs with the same IP address (0.0.0.0)"
+   ],
+   "first_seen": "2005-06-20",
+   "bucket": "noise",
+   "history": [
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1
+   ],
+   "summary": "Likely cause: memory or cache hardware fault on the node. Seen 1 times today on 1 node(s) (component DISCOVERY, level SEVERE); classifier says BENIGN.",
+   "summary_source": "rules"
+  }
+ ]
+}
