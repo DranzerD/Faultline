@@ -1,5 +1,10 @@
 # Faultline
 
+[![ci](https://github.com/DranzerD/Faultline/actions/workflows/ci.yml/badge.svg)](https://github.com/DranzerD/Faultline/actions/workflows/ci.yml)
+[![triage](https://github.com/DranzerD/Faultline/actions/workflows/triage.yml/badge.svg)](https://github.com/DranzerD/Faultline/actions/workflows/triage.yml)
+
+**[Live reports](https://dranzerd.github.io/Faultline/)** · [Sample report (2005-09-03)](https://dranzerd.github.io/Faultline/2005-09-03.html)
+
 **LLM-powered failure triage.** Raw logs are parsed into templates (Drain), embedded and
 clustered into recurring **failure signatures**, classified, bucketed as
 **new bug / known bug / flaky / environment / benign noise**, summarised by a local LLM, and
